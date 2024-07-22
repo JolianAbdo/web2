@@ -5,13 +5,14 @@ import Body from './Body';
 import Footer from './Footer';
 import Auth from './Auth';
 import './index.css';
+import HeroSection from './HeroSection';
 
 export function App() {
   return (
     <>
       <Header />
       <Body/>
- 
+      {/* <HeroSection /> */}
       <Footer />
     </>
   );

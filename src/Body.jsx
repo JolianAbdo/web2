@@ -1,11 +1,42 @@
 import { render } from "react";
 import { useState } from "preact/hooks";
 // import './index.css'
+import HeroSection from './HeroSection';
+
+
 
 
 const Body = () => {
-
     const [activeTab, setActiveTab] = useState("home");
+
+    const images = [
+        "https://funds2orgs.com/wp-content/uploads/2022/03/Volunteer-event-management.jpg",
+        "https://www.agilitypr.com/wp-content/uploads/2020/09/virtual-1.jpg",
+        "https://webbiquity.com/wp-content/uploads/2020/08/Teooh-virtual-conference-scaled.jpg",
+        "https://veekast.com/wp-content/uploads/2021/02/2020.10_mktg_BlogHeader_VirtualEvents_AP.png",
+    ];
+
+    const preloadedImages = images.map((src) => {
+        const img = new Image();
+        img.src = src;
+        return img;
+    });
+
+    function changeHeroBackground() {
+        const heroSection = document.getElementById("hero-section");
+        let index = 1;
+        heroSection.style.backgroundImage = `url(${preloadedImages[0].src})`;
+        setInterval(() => {
+            heroSection.style.backgroundImage = `url(${preloadedImages[index].src})`;
+            index = (index + 1) % preloadedImages.length;
+        }, 5000); // Change image every 5 seconds
+    }
+
+    const HeroSection = () => {
+        useEffect(() => {
+            changeHeroBackground();
+        }, []);
+    }
 
     const handleJoinClick = (event) => {
         const buttonId = event.currentTarget.id;
@@ -16,7 +47,7 @@ const Body = () => {
             case "back-btn":
                 setActiveTab("home");
                 break;
-                // add login button and check fields etc..
+            // add login button and check fields etc..
             default:
                 break;
         }
@@ -25,7 +56,7 @@ const Body = () => {
     const renderHomeBody = () => {
         return (
             <>
-                <div class="text-center">
+                <div class="text-center text-white">
                     <h2 class="text-5xl font-bold">Welcome to Virtual Event Planner</h2>
                     <p class="text-xl mt-4">Join us online for an amazing experience of tech talks and networking.</p>
                     <button
@@ -73,12 +104,14 @@ const Body = () => {
 
     return (
         <>
-            <div class="bg-slate-200 flex justify-center items-center h-screen w-full">
-                {/* {renderHomeBody()} */}
-                {/* {renderLoginScreen()} */}
+            {/* {changeHeroBackground()} */}
+            <div
+                id="hero-section"
+                className="h-screen bg-cover bg-center flex justify-center items-center w-full"
+                style={{ backgroundImage: `url(${preloadedImages[0].src})` }}
+            >
                 {activeTab == "home" ? renderHomeBody() : renderLoginScreen()}
             </div>
-
         </>
     );
 };
