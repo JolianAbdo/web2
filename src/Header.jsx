@@ -18,7 +18,7 @@ const Header = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-slate-700 shadow-md fixed top-0 left-0 right-0 z-10">
+        <div className="bg-white shadow-md fixed top-0 left-0 right-0 z-10">
             <div className="container mx-auto flex justify-between items-center p-4">
                 <h1 className="text-2xl font-bold text-blue-600">Virtual Event Platform</h1>
                 <nav className="ml-auto flex space-x-4">
