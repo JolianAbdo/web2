@@ -17,4 +17,25 @@ export function App() {
     </>
   );
 }
+  import React, { useEffect, useState } from 'react';
+
+const App = () => {
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetch('/api')
+      .then(response => response.text())
+      .then(data => setMessage(data));
+  }, []);
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <h1>{message}</h1>
+      </header>
+    </div>
+  );
+};
+
+
 
