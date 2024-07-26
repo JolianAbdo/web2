@@ -3,18 +3,22 @@ import React from 'react';
 import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
-import Auth from './Auth';
 import './index.css';
+import { Router } from 'preact-router';
+import Login from './Login';
+import Registration from './Registration';
+import EventPage from './EventPage';
+import EditEvent from './EditEvent';
+import JoinEvent from './JoinEvent'
 import HeroSection from './HeroSection';
+// import { Link, Router } from 'preact-router';
 
 export function App() {
   return (
     <>
       <Header />
       <Body/>
-      {/* <HeroSection /> */}
-      <Footer />
-    </>
+      <Footer/>
+      </> 
   );
 }
-

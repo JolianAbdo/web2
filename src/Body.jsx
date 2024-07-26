@@ -1,12 +1,16 @@
-import { render } from "react";
-import { useState } from "preact/hooks";
-// import './index.css'
+import { h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
+import { Router, route } from 'preact-router';
 import HeroSection from './HeroSection';
-import SwitchScreen from "../components/LoginOrRegister";
-
+import SwitchScreen from '../components/LoginOrRegister';
+import Login from './Login';
+import Registration from './Registration';
+import EventPage from './EventPage';
+// import event from './event'; 
 
 const Body = () => {
     const [activeTab, setActiveTab] = useState("home");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const images = [
         "https://funds2orgs.com/wp-content/uploads/2022/03/Volunteer-event-management.jpg",
@@ -31,29 +35,34 @@ const Body = () => {
         }, 5000); // Change image every 5 seconds
     }
 
-    const HeroSection = () => {
-        useEffect(() => {
-            changeHeroBackground();
-        }, []);
-    }
-
+    useEffect(() => {
+        changeHeroBackground();
+    }, []);
+  
     const handleJoinClick = (event) => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
             case "join-btn":
-                console.log(activeTab);
-                setActiveTab("login");
+                //setActiveTab("login");
+                route('/login');
                 break;
             case "back-btn":
                 setActiveTab("home");
                 break;
             case "register-btn":
-                setActiveTab("register");
+                route('/registration');
                 break;
             default:
                 console.log(activeTab);
                 break;
         }
+    };
+
+
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+        route('/event');
     };
 
     const renderHomeBody = () => {
@@ -64,47 +73,29 @@ const Body = () => {
                     <p class="text-xl mt-4">Join us online for an amazing experience of tech talks and networking.</p>
                     <button
                         id="join-btn"
-                        className="mt-8 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
+                        class="mt-8 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
                         onClick={handleJoinClick}
                     >
                         Join Now
                     </button>
                 </div>
             </>
-        )
-    }
+        );
+    };
 
     const renderLoginScreen = () => {
         return (
-            <>
-                <SwitchScreen
-                    title="Login"
-                    buttonText="Login"
-                    btnName="register-btn"
-                    alternateText="Don't have an account?"
-                    alternateActionText="Register here"
-                    handleButtonClick={handleJoinClick}
-                />
-            </>
-        )
-    }
+            <Login handleLogin={handleLogin} />
+        );
+    };
 
     const renderRegisterScreen = () => {
         return (
-            <>
-                <SwitchScreen
-                    title="Register"
-                    buttonText="Register"
-                    btnName="join-btn"
-                    alternateText="Already have an account?"
-                    alternateActionText="Login here"
-                    handleButtonClick={handleJoinClick}
-                />
-            </>
-        )
-    }
+            <Registration handleRegister={handleLogin} />
+        );
+    };
 
-    const renderpages = () => {
+    const renderPages = () => {
         switch (activeTab) {
             case "home":
                 return renderHomeBody();
@@ -115,19 +106,27 @@ const Body = () => {
             default:
                 break;
         }
-    }
+    };
 
     return (
         <>
-            {/* {changeHeroBackground()} */}
             <div
                 id="hero-section"
-                className="h-screen bg-cover bg-center flex justify-center items-center w-full"
+                class="h-screen bg-cover bg-center flex justify-center items-center w-full"
                 style={{ backgroundImage: `url(${preloadedImages[0].src})` }}
             >
-                {renderpages()}
+                {renderPages()}
+            </div>
+            <div id="app">
+                <Router>
+                    <Login path="/login" handleLogin={handleLogin} />
+                    <Registration path="/registration" handleRegister={handleLogin} />
+                    <EventPage path="/event" />
+                    {/* <Route path="/event" element={<event />} />                 */}
+                </Router>
             </div>
         </>
     );
 };
+
 export default Body;
