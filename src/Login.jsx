@@ -26,7 +26,7 @@ const Login = ({ handleLogin }) => {
 
             // pulling data from mongodb 
             const mongodb = anonymousUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("webProject").collection("users");
+            const usersCollection = mongodb.db("webProject").collection("user");
 
             // querying the collection for the username and password
             const user = await usersCollection.findOne({ username: username, password: password }); // in a real scenario, consider hashing

@@ -6,6 +6,7 @@ import SwitchScreen from '../components/LoginOrRegister';
 import Login from './Login';
 import Registration from './Registration';
 import EventPage from './EventPage';
+// import event from './event'; 
 
 const Body = () => {
     const [activeTab, setActiveTab] = useState("home");
@@ -61,7 +62,7 @@ const Body = () => {
 
     const handleLogin = () => {
         setIsLoggedIn(true);
-        route('/events');
+        route('/event');
     };
 
     const renderHomeBody = () => {
@@ -120,7 +121,8 @@ const Body = () => {
                 <Router>
                     <Login path="/login" handleLogin={handleLogin} />
                     <Registration path="/registration" handleRegister={handleLogin} />
-                    <EventPage path="/events" />
+                    <EventPage path="/event" />
+                    {/* <Route path="/event" element={<event />} />                 */}
                 </Router>
             </div>
         </>

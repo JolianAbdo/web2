@@ -20,7 +20,7 @@ const Registration = () => {
             const credentials = Credentials.anonymous();
             const user = await app.logIn(credentials);
             const mongodb = user.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("webProject").collection("users");
+            const usersCollection = mongodb.db("webProject").collection("user");
 
             await usersCollection.insertOne({
                 username,
