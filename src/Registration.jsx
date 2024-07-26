@@ -39,6 +39,7 @@ const Registration = () => {
             {/* Success Modal */}
             {showSuccessModal && (
                 <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
                     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                         <div class="mt-3 text-center">
                             <p class="text-lg leading-6 font-medium text-gray-900">Registration was successful</p>
@@ -53,10 +54,13 @@ const Registration = () => {
                         </div>
                     </div>
                 </div>
+                </div>
+
             )}
 
             {/* Registration Page */}
             <section class="container mx-auto mt-16 flex justify-center items-center">
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
                 <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
                     <h2 class="text-2xl font-semibold mb-6 text-center">Registration</h2>
                     <div class="space-y-4">
@@ -102,11 +106,13 @@ const Registration = () => {
                         </button>
                     </div>
                     <div class="mt-4 text-center">
-                        <a href="/" class="text-blue-500">Already have an account? Login</a>
+                        <a href="/login" class="text-blue-500">Already have an account? Login</a>
                     </div>
+                </div>
                 </div>
             </section>
         </div>
+
     );
 };
 

@@ -11,24 +11,14 @@ import EventPage from './EventPage';
 import EditEvent from './EditEvent';
 import JoinEvent from './JoinEvent'
 import HeroSection from './HeroSection';
+// import { Link, Router } from 'preact-router';
 
 export function App() {
   return (
     <>
       <Header />
       <Body/>
-      {/* <HeroSection /> */}
-      <Footer />
-    
-      <div id="app">
-        <Router>
-          <Login path="/" />
-          <Registration path="/registration" />
-          <EventPage path="/events" />
-          <EditEvent path="/edit-event" />
-          <JoinEvent path="/join" />
-        </Router>
-      </div>
+      <Footer/>
       </> 
   );
 }
