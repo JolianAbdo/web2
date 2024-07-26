@@ -35,8 +35,8 @@ const Header = () => {
             <div className="container mx-auto flex justify-between items-center p-4">
                 <h1 className="text-2xl font-bold text-blue-600">Virtual Event Platform</h1>
                 <nav className="ml-auto flex space-x-4 text-gray-700 hover:text-blue-600">
-                    <a href="#" id="home-button">Home</a>
-                    <a href="./EventDashboard.jsx" id="events-button">Events</a>
+                    <a href="#" id="home-button" className="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="./EventDashboard.jsx" id="events-button" className="text-gray-700 hover:text-blue-600">Events</a>
                     <a href="./LivePolls.jsx" id="polls-button" className="text-gray-700 hover:text-blue-600">Polls</a>
                     <a href="./QASessions.jsx" id="qa-button" className="text-gray-700 hover:text-blue-600">Q&A</a>
                     <a href="./Networking.jsx" id="networking-button" className="text-gray-700 hover:text-blue-600">Networking</a>
