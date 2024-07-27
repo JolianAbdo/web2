@@ -1,8 +1,13 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
 const Header = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    // Initialize state with a function to retrieve the saved value from local storage
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        const savedMode = localStorage.getItem('isDarkMode');
+        return savedMode !== null ? JSON.parse(savedMode) : false;
+    });
 
+    // Function to toggle the theme
     const toggleTheme = (isDark) => {
         const htmlElement = document.documentElement;
         if (isDark) {
@@ -12,16 +17,26 @@ const Header = () => {
         }
     };
 
+    // Update local storage and theme on mode change
+    useEffect(() => {
+        localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+        toggleTheme(isDarkMode);
+    }, [isDarkMode]);
+
+    // Ensure the theme is set correctly on initial render
+    useEffect(() => {
+        toggleTheme(isDarkMode);
+    }, []);
+
+    // Handle theme toggle button clicks
     const toggleLight = (event) => {
         const id = event.currentTarget.id;
         switch (id) {
             case 'light-mode':
                 setIsDarkMode(false);
-                toggleTheme(false);
                 break;
             case 'dark-mode':
                 setIsDarkMode(true);
-                toggleTheme(true);
                 break;
             default:
                 alert('Unknown mode!');
@@ -35,12 +50,7 @@ const Header = () => {
             <div className="container mx-auto flex justify-between items-center p-4">
                 <h1 className="text-2xl font-bold text-blue-600">Virtual Event Platform</h1>
                 <nav className="ml-auto flex space-x-4 text-gray-700 hover:text-blue-600">
-                    <a href="#" id="home-button" className="text-gray-700 hover:text-blue-600">Home</a>
-                    <a href="./EventDashboard.jsx" id="events-button" className="text-gray-700 hover:text-blue-600">Events</a>
-                    <a href="./LivePolls.jsx" id="polls-button" className="text-gray-700 hover:text-blue-600">Polls</a>
-                    <a href="./QASessions.jsx" id="qa-button" className="text-gray-700 hover:text-blue-600">Q&A</a>
-                    <a href="./Networking.jsx" id="networking-button" className="text-gray-700 hover:text-blue-600">Networking</a>
-                    <a href="" id="login-btn" className="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="./login" id="login-btn" className="text-gray-700 dark:text-blue-500 hover:text-blue-600">Login</a>
                     <button
                         id="light-mode"
                         className="text-gray-700 hover:text-blue-600"
@@ -63,7 +73,7 @@ const Header = () => {
                             alt="Dark Mode"
                         />
                     </button>
-                    
+
                 </nav>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { App, Credentials } from "realm-web";
+import './index.css'
 
 // mongodb auth
 const app = new App({ id: "application-0-rbrbg" });
@@ -8,14 +9,6 @@ const Login = ({ handleLogin }) => {
     // state management
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [lightMode, setLightMode] = useState("light");
-
-    useEffect(() => {
-        // handle theme mode on initial load
-        const savedMode = localStorage.getItem("lightmode") || "light";
-        setLightMode(savedMode);
-        document.documentElement.classList.toggle("dark", savedMode === "dark");
-    }, []);
 
     const login = async () => {
         try {
@@ -37,6 +30,7 @@ const Login = ({ handleLogin }) => {
                 localStorage.setItem("loggedInUsername", username);
                 handleLogin(); // Notify parent component of successful login
             } else {
+                console.log(usersCollection);
                 throw new Error("Invalid username or password.");
             }
         } catch (err) {
@@ -45,59 +39,52 @@ const Login = ({ handleLogin }) => {
         }
     };
 
-    const toggleMode = () => {
-        // toggling light/dark mode
-        const newMode = lightMode === "light" ? "dark" : "light";
-        setLightMode(newMode);
-        localStorage.setItem("lightmode", newMode);
-        document.documentElement.classList.toggle("dark", newMode === "dark");
-    };
-
     return (
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-        <div class={`w-full max-w-md p-8 dark:bg-slate-700 space-y-3 rounded-lg shadow-md ${lightMode === "dark" ? "bg-gray-800 text-white" : "bg-white"}`}>
-            <h2 class="text-2xl font-semibold text-center">Login</h2>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Username"
-                class={`block w-full px-4 py-2 mt-2 border rounded-md ${lightMode === "dark" ? "bg-gray-700 border-gray-600 focus:border-blue-300 focus:ring-blue-300" : "bg-gray-50 border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:outline-none focus:ring focus:ring-opacity-40`}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                class={`block w-full px-4 py-2 mt-2 border rounded-md ${lightMode === "dark" ? "bg-gray-700 border-gray-600 focus:border-blue-300 focus:ring-blue-300" : "bg-gray-50 border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:outline-none focus:ring focus:ring-opacity-40`}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-                onClick={login}
-                class="w-full px-4 py-2 text-white bg-blue-500 rounded-md focus:bg-blue-600 focus:outline-none"
-            >
-                Login
-            </button>
-            <div class="text-center">
-                <a href="/password_recovery" class="text-sm text-blue-500 hover:underline">
-                    Forgot your password?
-                </a>
-                <span class="mx-2 text-sm text-gray-600">|</span>
-                <a href="/registration" class="text-sm text-blue-500 hover:underline">
-                    Register
-                </a>
+        <div className="min-h-screen flex bg-slate-400 dark:bg-slate-500 items-center justify-center">
+            <div className="container mx-auto bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-1/3 h-80 justify-center items-center p-12">
+                <div className="flex flex-col items-center gap-2">
+                    <div className="font-bold text-black text-2xl">Login</div>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        className="custom-input dark:bg-slate-300"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        className="custom-input dark:bg-slate-300"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                        onClick={login}
+                        className="w-64 bg-blue-500 dark:bg-slate-800 text-white p-2 rounded-lg hover:bg-blue-600 transition">
+                        Login
+                    </button>
+                    <button
+                        onClick={() => window.location.href = '/'}
+                        className="bg-slate-400 w-40 text-white p-1 rounded-lg hover:bg-slate-600"
+                    >
+                        Back
+                    </button>
+                    <div className="text-center">
+                        <a href="/password_recovery" className="text-sm text-blue-500 dark:text-black hover:underline">
+                            Forgot your password?
+                        </a>
+                        <span className="mx-2 text-sm text-gray-600 dark:text-black">|</span>
+                        <a href="/register" className="text-sm text-blue-500 dark:text-black hover:underline">
+                            Register
+                        </a>
+                    </div>
+                </div>
             </div>
-            {/* <div class="text-center mt-4">
-                <button onClick={toggleMode} class="px-4 py-2 bg-gray-500 text-white rounded-md">
-                    Dark / Light
-                </button>
-            </div> */}
         </div>
-        </div>
-
     );
 };
 

@@ -270,3 +270,4 @@ const changePage = (page) => {
 }
 
 render(<App />, document.body)
+// export default EventForm;

@@ -129,15 +129,7 @@ const Body = () => {
             >
                 {renderPages()}
             </div>
-            <div id="app">
-                <Router>
-                    <Login path="/login" handleLogin={handleLogin} />
-                    <Registration path="/registration" handleRegister={handleLogin} />
-                    <PasswordRecovery path="/password_recovery" handleRecovery={handleLogin} />
-                    <EventPage path="/event" />
-                    {/* <Route path="/event" element={<event />} />                 */}
-                </Router>
-            </div>
+            
         </>
     );
 };
