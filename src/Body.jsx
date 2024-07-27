@@ -1,5 +1,13 @@
+import { h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
+import { Router, route } from 'preact-router';
 import HeroSection from './HeroSection';
-
+import SwitchScreen from '../components/LoginOrRegister';
+import Login from './Login';
+import Registration from './Registration';
+import PasswordRecovery from './PasswordRecovery';
+import EventPage from './EventPage';
+// import event from './event'; 
 
 const Body = () => {
     const [activeTab, setActiveTab] = useState("home");
@@ -11,49 +19,6 @@ const Body = () => {
         "https://webbiquity.com/wp-content/uploads/2020/08/Teooh-virtual-conference-scaled.jpg",
         "https://veekast.com/wp-content/uploads/2021/02/2020.10_mktg_BlogHeader_VirtualEvents_AP.png",
     ];
-
-    const SwitchScreen = ({ title, buttonText, btnName, alternateText, alternateActionText, handleButtonClick }) => {
-        return (
-            <div className="inset-0 mx-auto container bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-1/3 h-80 justify-center items-center p-12">
-                <div className="flex flex-col items-center gap-2">
-                    <div className="font-bold text-black text-2xl">{title}</div>
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-black">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            className="custom-input dark:bg-slate-300"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-black">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            className="custom-input dark:bg-slate-300"
-                        />
-                    </div>
-                    <button type="submit" className="w-64 bg-blue-500 dark:bg-slate-800 text-white p-2 rounded-lg hover:bg-blue-600 transition">{buttonText}</button>
-                    <button
-                        id="back-btn"
-                        className="bg-slate-400 w-40 text-white p-1 rounded-lg hover:bg-slate-600"
-                        onClick={handleButtonClick}
-                    >
-                        Back
-                    </button>
-                    <div
-                        id={btnName}
-                        className="text-center text-blue-600 dark:text-black mt-0 cursor-pointer"
-                        onClick={handleButtonClick}
-                    >
-                        {alternateText} <span className="underline">{alternateActionText}</span>
-                    </div>
-                </div>
-            </div>
-        );
-    };
 
     const preloadedImages = images.map((src) => {
         const img = new Image();
@@ -87,6 +52,9 @@ const Body = () => {
                 break;
             case "register-btn":
                 route('/registration');
+                break;
+            case "password_recovery-btn":
+                route('/password_recovery');
                 break;
             default:
                 console.log(activeTab);
@@ -131,6 +99,12 @@ const Body = () => {
         );
     };
 
+    const renderPasswordRecoveryScreen = () => {
+        return (
+            <PasswordRecovery handleRecovery={handleLogin} />
+        );
+    };
+
     const renderPages = () => {
         switch (activeTab) {
             case "home":
@@ -139,6 +113,8 @@ const Body = () => {
                 return renderLoginScreen();
             case "register":
                 return renderRegisterScreen();
+            case "password_recovery":
+                return renderPasswordRecoveryScreen();
             default:
                 break;
         }
@@ -157,8 +133,8 @@ const Body = () => {
                 <Router>
                     <Login path="/login" handleLogin={handleLogin} />
                     <Registration path="/registration" handleRegister={handleLogin} />
+                    <PasswordRecovery path="/password_recovery" handleRecovery={handleLogin} />
                     <EventPage path="/event" />
-                    {/* <EventPage path="/" /> */}
                     {/* <Route path="/event" element={<event />} />                 */}
                 </Router>
             </div>

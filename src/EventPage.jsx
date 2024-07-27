@@ -41,7 +41,7 @@ const EventPage = () => {
 
       // Fetch all users excluding the current one
       const mongodb = user.mongoClient("mongodb-atlas");
-      const usersCollection = mongodb.db("webProject").collection("users");
+      const usersCollection = mongodb.db("PROJECT0").collection("user");
       const fetchedUsers = await usersCollection.find({});
       const filteredUsers = fetchedUsers.filter(u => u._id !== user.id);
       setAllUsers(filteredUsers);

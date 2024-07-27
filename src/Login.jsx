@@ -26,7 +26,7 @@ const Login = ({ handleLogin }) => {
 
             // pulling data from mongodb 
             const mongodb = anonymousUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("webProject").collection("user");
+            const usersCollection = mongodb.db("PROJECT0").collection("user");
 
             // querying the collection for the username and password
             const user = await usersCollection.findOne({ username: username, password: password }); // in a real scenario, consider hashing
@@ -55,7 +55,7 @@ const Login = ({ handleLogin }) => {
 
     return (
         <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-        <div class={`w-full max-w-md p-8 space-y-3 rounded-lg shadow-md ${lightMode === "dark" ? "bg-gray-800 text-white" : "bg-white"}`}>
+        <div class={`w-full max-w-md p-8 dark:bg-slate-700 space-y-3 rounded-lg shadow-md ${lightMode === "dark" ? "bg-gray-800 text-white" : "bg-white"}`}>
             <h2 class="text-2xl font-semibold text-center">Login</h2>
             <input
                 type="text"
@@ -90,11 +90,11 @@ const Login = ({ handleLogin }) => {
                     Register
                 </a>
             </div>
-            <div class="text-center mt-4">
+            {/* <div class="text-center mt-4">
                 <button onClick={toggleMode} class="px-4 py-2 bg-gray-500 text-white rounded-md">
                     Dark / Light
                 </button>
-            </div>
+            </div> */}
         </div>
         </div>
 

@@ -3,7 +3,7 @@ import { App as RealmApp, Credentials } from "realm-web";
 
 const app = new RealmApp({ id: "application-0-rbrbg" });
 
-const Registration = () => {
+const PasswordRecovery = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,12 +14,17 @@ const Registration = () => {
             // Redirect to login
             const timer = setTimeout(() => {
                 window.location.href = '/login';
-            }, 3);
+            }, 1);
             return () => clearTimeout(timer);
         }
     }, [showSuccessModal]);
 
-    const registerUser = async () => {
+    const passRecoverUser = async () => {
+        if (!username || !password) {
+            alert('Please enter both username and password.');
+            return;
+        }
+        
         if (password !== confirmPassword) {
             alert('Passwords do not match. Please try again.');
             return;
@@ -29,30 +34,21 @@ const Registration = () => {
             const credentials = Credentials.anonymous();
             const user = await app.logIn(credentials);
             const mongodb = user.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("PROJECT0").collection("user");
+            const usersCollection = mongodb.db("webProject").collection("user");
 
-            const existingUser = await usersCollection.findOne({ username });
+            const result = await usersCollection.updateOne(
+                { username: username },
+                { $set: { password: password } }
+            );
 
-            if (!username || !password) {
-                alert('Please enter both username and password.');
-                return;
+            if (result.matchedCount > 0) {
+                setShowSuccessModal(true);
+            } else {
+                alert("Username not found. Please try again.");
             }
-
-            if (existingUser) {
-                alert('Username already exists. Please choose another one.');
-                return;
-            }
-
-            await usersCollection.insertOne({
-                username,
-                password,
-            });
-
-            // Show success modal
-            setShowSuccessModal(true);
         } catch (err) {
-            console.error("Failed to register user:", err);
-            alert("Registration failed. Please try again.");
+            console.error("Failed to recover password:", err);
+            alert("Recovery failed. Please try again.");
         }
     };
 
@@ -64,7 +60,7 @@ const Registration = () => {
                     <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
                         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                             <div class="mt-3 text-center">
-                                <p class="text-lg leading-6 font-medium text-gray-900">Registration was successful</p>
+                                <p class="text-lg leading-6 font-medium text-gray-900">Password Successfully Updated</p>
                                 <div class="mt-4">
                                     <button 
                                         onClick={() => (window.location.href = '/login')}
@@ -79,11 +75,11 @@ const Registration = () => {
                 </div>
             )}
 
-            {/* Registration Page */}
+            {/* Password Recovery Page */}
             <section class="container mx-auto mt-16 flex justify-center items-center">
                 <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
                     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-                        <h2 class="text-2xl font-semibold mb-6 text-center">Registration</h2>
+                        <h2 class="text-2xl font-semibold mb-6 text-center">Password Recovery</h2>
                         <div class="space-y-4">
                             <div>
                                 <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
@@ -97,7 +93,7 @@ const Registration = () => {
                                 />
                             </div>
                             <div>
-                                <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                                <label for="password" class="block text-sm font-medium text-gray-600">New Password</label>
                                 <input 
                                     type="password" 
                                     id="password" 
@@ -120,14 +116,14 @@ const Registration = () => {
                             </div>
                             <button 
                                 type="button" 
-                                onClick={registerUser} 
+                                onClick={passRecoverUser} 
                                 class="bg-blue-500 text-white p-2 rounded w-full"
                             >
-                                Register
+                                Change Password
                             </button>
                         </div>
-                        <div class="mt-4 text-center">
-                            <a href="/login" class="text-blue-500">Already have an account? Login</a>
+                        <div class="mt-4 text-left">
+                            <a href="/login" class="text-blue-500">Back</a>
                         </div>
                     </div>
                 </div>
@@ -136,4 +132,4 @@ const Registration = () => {
     );
 };
 
-export default Registration;
+export default PasswordRecovery;
