@@ -19,6 +19,7 @@ const EditEvent = () => {
     // retrieve the current event name from local storage
     const currentEventName = localStorage.getItem('currentEventName');
     console.log(currentEventName)
+    alert("edit page");
     if (!currentEventName) {
       console.error("no event name found in local storage");
       route('/events'); // redirect back if event name is not found

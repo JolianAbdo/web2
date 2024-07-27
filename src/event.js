@@ -40,22 +40,22 @@ const App = () => {
     }
 
     return (
-        <div class="bg-gray-100 font-sans">
+        <div class="bg-gray-100 font-sans min-h-screen">
             {/* Navigation Bar */}
-            <header class="bg-blue-500 p-4 text-white">
+            <header class="bg-blue-600 p-4 text-white shadow-lg">
                 <div class="container mx-auto flex justify-between items-center">
-                    <h1 class="text-3xl font-semibold">Virtual Event Platform</h1>
+                    <h1 class="text-3xl font-bold">Virtual Event Platform</h1>
                     <div>
                         <span class="mr-4">{updateGreeting()}</span> {/* Placeholder for dynamic username */}
-                        <a href="chat.html" class="text-white">
+                        <a href="chat.html" class="text-white hover:underline">
                             Chat
                         </a>
                         <span class="mx-2 text-white">|</span>
-                        <a href="profile.html" class="text-white">
+                        <a href="profile.html" class="text-white hover:underline">
                             Profile
                         </a>
                         <span class="mx-2 text-white">|</span>
-                        <a href="#" onClick={logout} class="text-white">
+                        <a href="#" onClick={logout} class="text-white hover:underline">
                             Logout
                         </a>
                     </div>
@@ -63,7 +63,7 @@ const App = () => {
             </header>
 
             {/* Main Content */}
-            <div class="container mx-auto mt-8 flex">
+            <div class="container mx-auto mt-8 flex flex-wrap">
                 {/* Calendar Display */}
                 <Calendar />
 
@@ -76,10 +76,10 @@ const App = () => {
 
             {/* Pagination Controls */}
             <div class="container mx-auto mt-4 flex justify-center items-center">
-                <button id="prevPage" class="bg-blue-500 text-white p-2 rounded mx-2" onClick={() => changePage(-1)}>
+                <button id="prevPage" class="bg-blue-600 text-white p-2 rounded mx-2 hover:bg-blue-700" onClick={() => changePage(-1)}>
                     Previous
                 </button>
-                <button id="nextPage" class="bg-blue-500 text-white p-2 rounded mx-2" onClick={() => changePage(1)}>
+                <button id="nextPage" class="bg-blue-600 text-white p-2 rounded mx-2 hover:bg-blue-700" onClick={() => changePage(1)}>
                     Next
                 </button>
             </div>
@@ -112,7 +112,7 @@ const Calendar = () => {
 
             const dayDiv = document.createElement("div")
             dayDiv.textContent = day
-            dayDiv.className = "text-center cursor-pointer py-1 hover:bg-blue-100" // Base styling
+            dayDiv.className = "text-center cursor-pointer py-2 hover:bg-blue-100" // Base styling
 
             // Apply bold styling if there's an event on this day
             if (eventDates.includes(currentDayString)) {
@@ -121,9 +121,9 @@ const Calendar = () => {
 
             dayDiv.onclick = () => {
                 if (selectedDayDiv) {
-                    selectedDayDiv.classList.remove("bg-blue-500", "text-white", "rounded-lg") // Remove from previously selected
+                    selectedDayDiv.classList.remove("bg-blue-600", "text-white", "rounded-lg") // Remove from previously selected
                 }
-                dayDiv.classList.add("bg-blue-500", "text-white", "rounded-lg") // Add to current selected
+                dayDiv.classList.add("bg-blue-600", "text-white", "rounded-lg") // Add to current selected
                 selectedDayDiv = dayDiv // Update reference to currently selected
                 displayEventsForDate(day)
             }
@@ -133,7 +133,22 @@ const Calendar = () => {
         document.getElementById("monthYear").textContent = `${monthNames[currentMonth]} ${currentYear}`
     }
 
-    return <div class="flex-auto w-1/2 mr-8 bg-white shadow-lg rounded-lg">{/* Calendar display content */}</div>
+    return (
+        <div class="flex-auto w-1/2 mr-8 bg-white shadow-lg rounded-lg p-4">
+            <div class="flex justify-between items-center mb-4">
+                <button class="bg-gray-300 text-gray-700 p-2 rounded hover:bg-gray-400" onClick={() => setCurrentMonth((currentMonth + 11) % 12)}>
+                    Previous
+                </button>
+                <h2 id="monthYear" class="text-xl font-semibold"></h2>
+                <button class="bg-gray-300 text-gray-700 p-2 rounded hover:bg-gray-400" onClick={() => setCurrentMonth((currentMonth + 1) % 12)}>
+                    Next
+                </button>
+            </div>
+            <div id="calendarDays" class="grid grid-cols-7 gap-2">
+                {/* Calendar days will be dynamically added here */}
+            </div>
+        </div>
+    )
 }
 
 const EventForm = () => {
@@ -204,7 +219,38 @@ const EventForm = () => {
         }
     }
 
-    return <div class="flex-auto w-1/2 bg-white p-8 rounded-lg shadow-md">{/* Event creation form content */}</div>
+    return (
+        <div class="flex-auto w-1/2 bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Create Event</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700">Event Name</label>
+                <input id="eventName" type="text" class="mt-1 p-2 border rounded w-full" value={eventName} onChange={(e) => setEventName(e.target.value)} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Event Date</label>
+                <input id="eventDate" type="date" class="mt-1 p-2 border rounded w-full" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Event Time</label>
+                <input id="eventTime" type="time" class="mt-1 p-2 border rounded w-full" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+            </div>
+            <div class="mb-4">
+                <label class="inline-flex items-center">
+                    <input id="addUsersToggle" type="checkbox" class="form-checkbox" checked={addUsersToggle} onChange={handleToggle} />
+                    <span class="ml-2 text-gray-700">Add Users</span>
+                </label>
+            </div>
+            <div id="usersSelectDiv" class={`mb-4 ${addUsersToggle ? '' : 'hidden'}`}>
+                <label class="block text-gray-700">Select Users</label>
+                <div id="usersCheckboxList" class="mt-1">
+                    {/* User checkboxes will be dynamically added here */}
+                </div>
+            </div>
+            <button class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700" onClick={addEvent}>
+                Add Event
+            </button>
+        </div>
+    )
 }
 
 const EventList = () => {

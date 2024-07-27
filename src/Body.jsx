@@ -122,6 +122,7 @@ const Body = () => {
                     <Login path="/login" handleLogin={handleLogin} />
                     <Registration path="/registration" handleRegister={handleLogin} />
                     <EventPage path="/event" />
+                    {/* <EventPage path="/" /> */}
                     {/* <Route path="/event" element={<event />} />                 */}
                 </Router>
             </div>
