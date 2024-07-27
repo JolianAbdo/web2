@@ -1,8 +1,9 @@
 import React from 'react';
+import Header from '../src/Header';
 
 const SwitchScreen = ({ title, buttonText, btnName, alternateText, alternateActionText, handleButtonClick }) => {
     return (
-        <div className="inset-0 mx-auto container bg-slate-100 flex flex-col gap-8 rounded-2xl w-1/3 h-80 justify-center items-center p-12">
+        <div className="inset-0 mx-auto container bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-1/3 h-80 justify-center items-center p-12">
             <div className="flex flex-col items-center gap-2">
                 <div className="font-bold text-black text-2xl">{title}</div>
                 <div>
