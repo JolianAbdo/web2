@@ -43,6 +43,7 @@ const PasswordRecovery = () => {
 
             if (result.matchedCount > 0) {
                 setShowSuccessModal(true);
+                console.log(showSuccessModal);
             } else {
                 alert("Username not found. Please try again.");
             }

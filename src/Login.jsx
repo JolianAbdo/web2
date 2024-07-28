@@ -28,7 +28,7 @@ const Login = ({ handleLogin }) => {
                 console.log("Login successful for user:", user.username);
                 // saving username in local storage
                 localStorage.setItem("loggedInUsername", username);
-                handleLogin(); // Notify parent component of successful login
+                window.location.href = "/event-page"; // Notify parent component of successful login
             } else {
                 console.log(usersCollection);
                 throw new Error("Invalid username or password.");

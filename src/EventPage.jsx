@@ -215,7 +215,7 @@ const EventPage = () => {
 
   const handleEditEvent = (eventName) => {
     localStorage.setItem('currentEventName', eventName);
-    route('/EditEvent'); // EditEvent page
+    // route('/EditEvent'); // EditEvent page
   };
   
   return (
