@@ -1,13 +1,9 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { Router, route } from 'preact-router';
-import HeroSection from './HeroSection';
-import SwitchScreen from '../components/LoginOrRegister';
 import Login from './Login';
 import Registration from './Registration';
 import PasswordRecovery from './PasswordRecovery';
-import EventPage from './EventPage';
-// import event from './event'; 
 
 const Body = () => {
     const [activeTab, setActiveTab] = useState("home");
@@ -57,12 +53,9 @@ const Body = () => {
                 route('/password_recovery');
                 break;
             default:
-                console.log(activeTab);
                 break;
         }
     };
-
-
 
     const handleLogin = () => {
         setIsLoggedIn(true);

@@ -3,9 +3,8 @@ import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
 import './index.css';
-import { Router, Route } from 'preact-router';
+import { Router } from 'preact-router';
 import Login from './Login';
-// import EventPage from './event';
 import EventPage from './EventPage';
 import Registration from './Registration';
 import Recovery from './PasswordRecovery'

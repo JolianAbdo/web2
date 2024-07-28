@@ -219,7 +219,7 @@ const EventPage = () => {
   };
   
   return (
-<div class="bg-gray-100 font-sans">
+<div class="bg-gray-100 dark:bg-slate-500 font-sans">
   {/* Success Modal */}
   {showSuccessModal && (
     <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
@@ -237,7 +237,7 @@ const EventPage = () => {
     </div>
   )}
 
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen dark:bg-slate-400 flex flex-col">
     {/* Header */}
     <header class="bg-white shadow-md">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -255,28 +255,28 @@ const EventPage = () => {
     </header>
 
     <div class="container mx-auto px-4 py-8 flex flex-1 flex-col md:flex-row">
-      {/* Sidebar for Event Creation */}
+      {/* Create New Event window */}
       <aside class="w-full md:w-1/3 mb-8 md:mb-0 md:pr-8">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Create New Event</h2>
-        <div class="bg-white p-6 rounded-md shadow-md">
+        <h2 class="text-xl font-semibold text-black mb-4">Create New Event</h2>
+        <div class="bg-white  dark:bg-slate-700 p-6 rounded-md shadow-md">
           <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2" htmlFor="eventName">Event Name</label>
-            <input type="text" id="eventName" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+            <label class="block text-black font-medium mb-2" htmlFor="eventName">Event Name</label>
+            <input type="text" id="eventName" class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2" htmlFor="eventDate">Event Date</label>
-            <input type="date" id="eventDate" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+            <label class="block text-black font-medium mb-2" htmlFor="eventDate">Event Date</label>
+            <input type="date" id="eventDate" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2" htmlFor="eventTime">Event Time</label>
-            <input type="time" id="eventTime" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+            <label class="block text-black font-medium mb-2" htmlFor="eventTime">Event Time</label>
+            <input type="time" id="eventTime" class="w-full px-3 py-2 border rounded-md focus:outline-none dark:bg-slate-300 focus:ring focus:border-blue-300" />
           </div>
           <div class="mb-4">
             <button
-              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md w-full"
+              class="px-4 py-2 bg-gray-400 text-gray-800 rounded-md w-full"
               onClick={() => setShowAttendeesSelection(!showAttendeesSelection)}
             >
-              {showAttendeesSelection ? 'Hide' : 'Select'} Attendees
+              {showAttendeesSelection ? 'Hide' : 'Add'} Attendees
             </button>
             {showAttendeesSelection && (
               <div class="mt-4">
@@ -360,13 +360,13 @@ const EventPage = () => {
           <h2 class="text-xl font-semibold text-gray-800 mb-4">All Events</h2>
           <ul class="space-y-4">
             {events.map((event) => (
-              <li key={event._id} class="bg-white p-4 rounded-md shadow-md">
+              <li key={event._id} class="bg-white p-4 rounded-md dark:bg-slate-300 shadow-md">
                 <h4 class="text-md font-semibold">{event.name}</h4>
                 <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}</p>
                 <p class="text-sm text-gray-600">Time: {event.time}</p>
                 <p class="text-sm text-gray-600">Attendees: {event.attendees.join(', ')}</p>
                 <div class="flex space-x-2 mt-2">
-                  <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button>
+                  {/* <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button> */}
                   <button onClick={() => handleDeleteEvent(event._id)} class="px-3 py-1 bg-red-500 text-white rounded-md">Delete</button>
                 </div>
               </li>
