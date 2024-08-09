@@ -9,7 +9,7 @@ const EventDashboard = ({ user }) => {
     const fetchEvents = async () => {
       try {
         const mongodb = user.mongoClient("mongodb-atlas");
-        const eventsCollection = mongodb.db("webProject").collection("events");
+        const eventsCollection = mongodb.db("Events").collection("EventsForUser");
         const fetchedEvents = await eventsCollection.find({}).toArray();
         setEvents(fetchedEvents);
       } catch (error) {
@@ -18,7 +18,7 @@ const EventDashboard = ({ user }) => {
     };
     const displayEvents = async (user) => {
       const mongodb = user.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("webProject").collection("events");
+      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
       const fetchedEvents = await eventsCollection.find({});
       setEvents(fetchedEvents);
     };  
@@ -29,7 +29,7 @@ const EventDashboard = ({ user }) => {
   const handleDeleteEvent = async (eventId) => {
     try {
       const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("webProject").collection("events");
+      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
       await eventsCollection.deleteOne({ _id: eventId });
       await fetchAndUpdateEvents(); // Refresh the events
     } catch (error) {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "preact/hooks";
 import { App as RealmApp, Credentials } from "realm-web";
 
-const app = new RealmApp({ id: "application-0-rbrbg" });
+const app = new RealmApp({ id: "application-0-wjjnjup" });
 
 const PasswordRecovery = () => {
     const [username, setUsername] = useState("");
@@ -14,7 +14,7 @@ const PasswordRecovery = () => {
             // Redirect to login
             const timer = setTimeout(() => {
                 window.location.href = '/login';
-            }, 1);
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [showSuccessModal]);
@@ -34,7 +34,7 @@ const PasswordRecovery = () => {
             const credentials = Credentials.anonymous();
             const user = await app.logIn(credentials);
             const mongodb = user.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("webProject").collection("user");
+            const usersCollection = mongodb.db("Login").collection("Users");
 
             const result = await usersCollection.updateOne(
                 { username: username },

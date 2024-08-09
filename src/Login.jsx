@@ -3,7 +3,7 @@ import { App, Credentials } from "realm-web";
 import './index.css'
 
 // mongodb auth
-const app = new App({ id: "application-0-rbrbg" });
+const app = new App({ id: "application-0-wjjnjup" });
 
 const Login = ({ handleLogin }) => {
     // state management
@@ -19,11 +19,12 @@ const Login = ({ handleLogin }) => {
 
             // pulling data from mongodb 
             const mongodb = anonymousUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("PROJECT0").collection("user");
+            const usersCollection = mongodb.db("Login").collection("Users");
 
             // querying the collection for the username and password
-            const user = await usersCollection.findOne({ username: username, password: password }); // in a real scenario, consider hashing
-
+            const user = await usersCollection.findOne({ username: username, password: password });
+            console.log("Queried User:", user);
+            
             if (user) {
                 console.log("Login successful for user:", user.username);
                 // saving username in local storage

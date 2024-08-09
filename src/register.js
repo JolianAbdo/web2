@@ -12,7 +12,7 @@ const Register = () => {
     const registerUser = async () => {
         try {
             // Initialize Realm app with application ID
-            const app = new App({ id: "application-0-rbrbg" });
+            const app = new App({ id: "application-0-wjjnjup" });
 
             // Log in anonymously to MongoDB Realm
             const credentials = Credentials.anonymous();
@@ -20,7 +20,7 @@ const Register = () => {
 
             // Access MongoDB collection for users
             const mongodb = user.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("webProject").collection("users");
+            const usersCollection = mongodb.db("Login").collection("Users");
 
             // Check if passwords match before proceeding
             if (password !== confirmPassword) {
@@ -33,7 +33,7 @@ const Register = () => {
                 username: username,
                 password: password
             });
-
+            console.log("Queried User:", user);
             // Show success modal to the user upon successful registration
             document.getElementById("successModal").style.display = "block";
 

@@ -5,7 +5,7 @@ import { route } from 'preact-router';
 
 
 // MongoDB auth
-const app = new RealmApp({ id: "application-0-rbrbg" });
+const app = new RealmApp({ id: "application-0-wjjnjup" });
 
 // Month names array
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -42,7 +42,7 @@ const EventPage = () => {
 
       // Fetch all users excluding the current one
       const mongodb = user.mongoClient("mongodb-atlas");
-      const usersCollection = mongodb.db("PROJECT0").collection("user");
+      const usersCollection = mongodb.db("Login").collection("Users");
       const fetchedUsers = await usersCollection.find({});
       const filteredUsers = fetchedUsers.filter(u => u._id !== user.id);
       setAllUsers(filteredUsers);
@@ -82,7 +82,7 @@ const EventPage = () => {
 
   const displayEvents = async (user) => {
     const mongodb = user.mongoClient("mongodb-atlas");
-    const eventsCollection = mongodb.db("webProject").collection("events");
+    const eventsCollection = mongodb.db("Events").collection("EventsForUser");
     const fetchedEvents = await eventsCollection.find({});
     setEvents(fetchedEvents);
   };
@@ -99,7 +99,7 @@ const EventPage = () => {
 
     try {
       const mongodb = loggedInUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("webProject").collection("events");
+      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
       await eventsCollection.insertOne({
         name: eventName,
         date: eventDate,
@@ -197,7 +197,7 @@ const EventPage = () => {
 
   const fetchAndUpdateEvents = async () => {
     const mongodb = loggedInUser.mongoClient("mongodb-atlas");
-    const eventsCollection = mongodb.db("webProject").collection("events");
+    const eventsCollection = mongodb.db("Events").collection("EventsForUser");
     const fetchedEvents = await eventsCollection.find({});
     setEvents(fetchedEvents);
   };
@@ -205,7 +205,7 @@ const EventPage = () => {
   const handleDeleteEvent = async (eventId) => {
     try {
       const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("webProject").collection("events");
+      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
       await eventsCollection.deleteOne({ _id: eventId });
       await fetchAndUpdateEvents(); // Refresh the events
     } catch (error) {
@@ -292,7 +292,7 @@ const EventPage = () => {
                           onChange={() => handleUserSelection(user._id)}
                           class="form-checkbox h-5 w-5 text-blue-600"
                         />
-                        <span class="ml-2 text-gray-700">{user.username}</span>
+                        <span class="ml-2 text-blue-500">{user.username}</span>
                       </label>
                     </li>
                   ))}
