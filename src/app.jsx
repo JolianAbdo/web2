@@ -7,20 +7,26 @@ import { Router } from 'preact-router';
 import Login from './Login';
 import EventPage from './EventPage';
 import Registration from './Registration';
-import Recovery from './PasswordRecovery'
+import Recovery from './PasswordRecovery';
+import EventDashboard from './EventDashboard';
+import JoinEvent from './JoinEvent';
 
 export function App() {
   return (
     <>
       <div id="app">
         <Header />
-        <Router>
-          <Body path="/" />
-          <Login path="login" />
-          <Registration path="register" />
-          <Recovery path="password_recovery" />
-          <EventPage path="event-page" />
-        </Router>
+        <main>
+          <Router>
+            <Body path="/" />
+            <Login path="/login" />
+            <Registration path="/register" />
+            <Recovery path="/password_recovery" />
+            <EventPage path="/event-page" />
+            <EventDashboard path="/event-dashboard" />
+            <JoinEvent path="/JoinEvent" />
+          </Router>
+        </main>
         <Footer />
       </div>
     </>

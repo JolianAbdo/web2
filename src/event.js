@@ -141,7 +141,7 @@ const Calendar = () => {
                 </button>
                 <h2 id="monthYear" class="text-xl font-semibold"></h2>
                 <button class="bg-gray-300 text-gray-700 p-2 rounded hover:bg-gray-400" onClick={() => setCurrentMonth((currentMonth + 1) % 12)}>
-                    Next
+                    Nextt
                 </button>
             </div>
             <div id="calendarDays" class="grid grid-cols-7 gap-2">

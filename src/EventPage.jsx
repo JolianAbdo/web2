@@ -3,6 +3,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { App as RealmApp, Credentials } from "realm-web";
 import { route } from 'preact-router';
 
+
 // MongoDB auth
 const app = new RealmApp({ id: "application-0-rbrbg" });
 
@@ -235,25 +236,25 @@ const EventPage = () => {
         </div>
       </div>
     </div>
-  )}
 
+  )}
+{/*  
   <div class="min-h-screen dark:bg-slate-400 flex flex-col">
-    {/* Header */}
+    {/* Header 
     <header class="bg-white shadow-md">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center">
           <h1 class="text-2xl font-bold text-blue-600">Event Calendar</h1>
-          <p class="ml-4 text-gray-600">Logged in as: {username}</p>
-        </div>
-        <button onClick={logout} class="px-4 py-2 bg-red-500 text-white rounded-md">Logout</button>
-        <button onClick={scrollToAllEvents} class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
-            All Events
+          <p class="ml-4 text-gray-600">Logged in assss: {username}</p>
+        <button onClick={logout} class="px-4 py-2 bg-red-500 text-white rounded-md">ll</button>
+        <button onClick={updateCalendar} class="px-4 py-22 hover:bg-blue-700 text-white font-bold rounded-md">
+            All events
           </button>
-           
+           </div>
         </div>
 
     </header>
-
+*/}
     <div class="container mx-auto px-4 py-8 flex flex-1 flex-col md:flex-row">
       {/* Create New Event window */}
       <aside class="w-full md:w-1/3 mb-8 md:mb-0 md:pr-8">
@@ -375,7 +376,6 @@ const EventPage = () => {
       </main>
     </div>
   </div>
-</div>
   );
 };
 

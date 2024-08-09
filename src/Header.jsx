@@ -57,7 +57,12 @@ const Header = ({ currentPage, onScrollToAllEvents }) => {
     setLoggedIn(false);
     route('/login');
   };
-
+  const goToEventDashboard = () => {
+    route('/event-dashboard');
+};
+const JoinEvent = () => {
+  route('/JoinEvent');
+};
   return (
     <div className="bg-white dark:bg-slate-800 shadow-md fixed top-0 left-0 right-0 z-10">
       <div className="container mx-auto flex justify-between items-center p-4">
@@ -72,20 +77,25 @@ const Header = ({ currentPage, onScrollToAllEvents }) => {
             <a href="./login" id="login-btn" className="text-gray-700 dark:text-blue-500 hover:text-blue-600">Login</a>
           ) : (
             <div className="flex items-center space-x-4">
-              {currentPage === 'event' && (
-                <button
-                  onClick={onScrollToAllEvents}
-                  className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mr-2"
-                >
-                  All Events
-                </button>
-              )}
+              <button
+                onClick={goToEventDashboard}
+                className="px-4 py-2 bg-white text-black rounded-md"
+              >
+                All Events
+              </button> 
+              <button
+                onClick={JoinEvent}
+                className="px-4 py-2 bg-white text-black rounded-md"
+              >
+                Join Event 
+              </button> 
               <button
                 onClick={logout}
                 className="px-4 py-2 bg-red-500 text-white rounded-md"
               >
                 Logout
-              </button>
+              </button> 
+              
             </div>
           )}
           <button

@@ -22,4 +22,12 @@
   .custom-input::placeholder {
     font-size: 0.875rem; /* sm:text-sm */
   }
+  /* Body takes up remaining space */
+  main {
+    flex-grow: 0;
+    padding: 50px; /* Optional: Add padding if needed */
+    overflow-y: auto; /* Optional: Allow scrolling if content overflows */
+  }
+  
+
   

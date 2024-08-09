@@ -23,7 +23,7 @@ const JoinEvent = () => {
     if (!eventName) {
       // if no event name is found in local storage, log an error and redirect to events list
       console.error("no event name found in local storage");
-      route('/events'); // redirect to events list if event name is not found
+      route('/event-page'); // redirect to events list if event name is not found
       return;
     }
 
@@ -68,7 +68,7 @@ const JoinEvent = () => {
 
   const leaveEvent = () => {
     // navigate back to the events list page
-    route('/events');
+    route('/event-page');
   };
 
   return (
