@@ -10,6 +10,8 @@ import Registration from './Registration';
 import Recovery from './PasswordRecovery';
 import EventDashboard from './EventDashboard';
 import JoinEvent from './JoinEvent';
+import EditEvent from './EditEvent';
+
 
 export function App() {
   return (
@@ -25,6 +27,7 @@ export function App() {
             <EventPage path="/event-page" />
             <EventDashboard path="/event-dashboard" />
             <JoinEvent path="/JoinEvent" />
+            <EditEvent path="/EditEvent" />
           </Router>
         </main>
         <Footer />

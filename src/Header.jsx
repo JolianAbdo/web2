@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
+import EventDashboard from './EventDashboard';
 
 const Header = ({ currentPage, onScrollToAllEvents }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -57,11 +58,14 @@ const Header = ({ currentPage, onScrollToAllEvents }) => {
     setLoggedIn(false);
     route('/login');
   };
-  const goToEventDashboard = () => {
-    route('/event-dashboard');
+  const goToCreateEvent = () => {
+    route('/event-page');
 };
 const JoinEvent = () => {
   route('/JoinEvent');
+};
+const EventDashboard = () => {
+  route('/event-dashboard');
 };
   return (
     <div className="bg-white dark:bg-slate-800 shadow-md fixed top-0 left-0 right-0 z-10">
@@ -78,16 +82,22 @@ const JoinEvent = () => {
           ) : (
             <div className="flex items-center space-x-4">
               <button
-                onClick={goToEventDashboard}
+                onClick={goToCreateEvent}
                 className="px-4 py-2 bg-white text-black rounded-md"
               >
-                All Events
+                Create Event
               </button> 
               <button
                 onClick={JoinEvent}
                 className="px-4 py-2 bg-white text-black rounded-md"
               >
                 Join Event 
+              </button> 
+              <button
+                onClick={EventDashboard}
+                className="px-4 py-2 bg-white text-black rounded-md"
+              >
+                ALL Events
               </button> 
               <button
                 onClick={logout}

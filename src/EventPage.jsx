@@ -53,40 +53,48 @@ const EventPage = () => {
   const generateCalendarDays = (year, month) => {
     const numDays = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
-
-    const calendarDays = Array.from({ length: firstDay }, () => null);
-
-    const username = localStorage.getItem('loggedInUsername');
     const today = new Date();
     const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
 
-    for (let day = 1; day <= numDays; day++) {
-      const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      const dayEvents = events.filter(event => formatDate(event.date) === fullDate);
-      const isEvent = dayEvents.length > 0;
-      const isUserInvolved = dayEvents.some(event =>
-        event.username === username || event.attendees.includes(username)
-      );
-      const isToday = isCurrentMonth && day === today.getDate();
+    const calendarDays = Array.from({ length: firstDay }, () => null);
 
-      calendarDays.push({
-        day,
-        isEvent,
-        isUserInvolved,
-        isToday,
-      });
+    for (let day = 1; day <= numDays; day++) {
+        const fullDate = new Date(year, month, day);
+        const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayEvents = events.filter(event => formatDate(event.date) === formattedDate);
+        const isEvent = dayEvents.length > 0;
+        const isUserInvolved = dayEvents.some(event =>
+            event.username === username || event.attendees.includes(username)
+        );
+        const isToday = isCurrentMonth && day === today.getDate();
+        const isUnavailable = fullDate < today;
+
+        calendarDays.push({
+            day,
+            isEvent,
+            isUserInvolved,
+            isToday,
+            isUnavailable,
+        });
     }
 
     setCalendarDays(calendarDays);
-  };
+};
+
 
   const displayEvents = async (user) => {
     const mongodb = user.mongoClient("mongodb-atlas");
     const eventsCollection = mongodb.db("Events").collection("EventsForUser");
-    const fetchedEvents = await eventsCollection.find({});
-    setEvents(fetchedEvents);
-  };
+    // Fetch events where the username matches the logged-in user
+    const fetchedEvents = await eventsCollection.find({
+      $or: [
+          { username: username }, // Events created by the user
+          { attendees: username }  // Events the user is attending
+      ]
+  });
 
+  setEvents(fetchedEvents);
+};
   const addEvent = async () => {
     const eventName = document.getElementById('eventName').value;
     const eventDate = document.getElementById('eventDate').value;
@@ -216,7 +224,7 @@ const EventPage = () => {
 
   const handleEditEvent = (eventName) => {
     localStorage.setItem('currentEventName', eventName);
-    // route('/EditEvent'); // EditEvent page
+     route('/EditEvent'); // EditEvent page
   };
   
   return (
@@ -238,23 +246,7 @@ const EventPage = () => {
     </div>
 
   )}
-{/*  
-  <div class="min-h-screen dark:bg-slate-400 flex flex-col">
-    {/* Header 
-    <header class="bg-white shadow-md">
-      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="flex items-center">
-          <h1 class="text-2xl font-bold text-blue-600">Event Calendar</h1>
-          <p class="ml-4 text-gray-600">Logged in assss: {username}</p>
-        <button onClick={logout} class="px-4 py-2 bg-red-500 text-white rounded-md">ll</button>
-        <button onClick={updateCalendar} class="px-4 py-22 hover:bg-blue-700 text-white font-bold rounded-md">
-            All events
-          </button>
-           </div>
-        </div>
 
-    </header>
-*/}
     <div class="container mx-auto px-4 py-8 flex flex-1 flex-col md:flex-row">
       {/* Create New Event window */}
       <aside class="w-full md:w-1/3 mb-8 md:mb-0 md:pr-8">
@@ -313,24 +305,24 @@ const EventPage = () => {
         </div>
 
         {/* Calendar */}
-        <div class="grid grid-cols-7 gap-4">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-            <div key={day} class="text-center font-semibold text-gray-700">{day}</div>
-          ))}
-          {calendarDays.map((day, index) => (
-            <div
-              key={index}
-              class={`h-20 border rounded-md flex items-center justify-center cursor-pointer ${
-                day?.isEvent ? 'bg-blue-100' : ''
-              } ${day?.isUserInvolved ? 'border-blue-500' : 'border-gray-300'} ${
-                day?.isToday ? 'bg-red-100 border-red-500' : ''
-              }`}
-              onClick={() => handleDayClick(day?.day)}
-            >
-              {day?.day || ''}
-            </div>
-          ))}
-        </div>
+<div class="grid grid-cols-7 gap-4">
+  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+    <div key={day} class="text-center font-semibold text-gray-700">{day}</div>
+  ))}
+  {calendarDays.map((dayObj, index) => (
+    <div
+      key={index}
+      class={`h-20 border rounded-md flex items-center justify-center ${
+        dayObj?.isEvent ? 'bg-blue-100' : ''
+      } ${dayObj?.isUserInvolved ? 'border-blue-500' : 'border-gray-300'} ${
+        dayObj?.isToday ? 'bg-red-100 border-red-500' : ''
+      } ${dayObj?.isUnavailable && !dayObj?.isToday ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'}`}
+      onClick={() => !dayObj?.isUnavailable && handleDayClick(dayObj?.day)}
+    >
+      {dayObj?.day || ''}
+    </div>
+  ))}
+</div>
 
         {/* Event Details Modal */}
         {selectedDayEvents.length > 0 && (
@@ -367,8 +359,8 @@ const EventPage = () => {
                 <p class="text-sm text-gray-600">Time: {event.time}</p>
                 <p class="text-sm text-gray-600">Attendees: {event.attendees.join(', ')}</p>
                 <div class="flex space-x-2 mt-2">
-                  {/* <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button> */}
                   <button onClick={() => handleDeleteEvent(event._id)} class="px-3 py-1 bg-red-500 text-white rounded-md">Delete</button>
+                  <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button>
                 </div>
               </li>
             ))}

@@ -4,7 +4,7 @@ import { route } from 'preact-router';
 import { App as RealmApp, Credentials } from "realm-web";
 
 // initialize the realm app with the application id
-const app = new RealmApp({ id: "application-0-rbrbg" });
+const app = new RealmApp({ id: "application-0-wjjnjup" });
 
 const EditEvent = () => {
   // state management for event details and attendees
@@ -18,11 +18,9 @@ const EditEvent = () => {
   useEffect(() => {
     // retrieve the current event name from local storage
     const currentEventName = localStorage.getItem('currentEventName');
-    console.log(currentEventName)
-    alert("edit page");
     if (!currentEventName) {
       console.error("no event name found in local storage");
-      route('/events'); // redirect back if event name is not found
+      route('/event-page'); // redirect back if event name is not found
       return;
     }
 
@@ -31,7 +29,7 @@ const EditEvent = () => {
         // log in anonymously to mongodb realm
         const user = await app.logIn(Credentials.anonymous());
         const mongodb = user.mongoClient("mongodb-atlas");
-        const eventsCollection = mongodb.db("webProject").collection("events");
+        const eventsCollection = mongodb.db("Events").collection("EventsForUser");
 
         // use the event name to fetch the event data
         const event = await eventsCollection.findOne({ name: currentEventName });
@@ -43,12 +41,12 @@ const EditEvent = () => {
           setAttendees(event.attendees);
           setEventId(event._id);
           // fetch all users excluding the current one
-          const usersCollection = mongodb.db("webProject").collection("users");
+          const usersCollection = mongodb.db("Login").collection("Users");
           const users = await usersCollection.find({});
           setAllUsers(users.map(user => user.username).filter(username => username !== localStorage.getItem("loggedInUsername")));
         } else {
           console.error("event not found");
-          route('/events'); // redirect back if event is not found
+          route('/event-page'); // redirect back if event is not found
         }
       } catch (error) {
         console.error("failed to fetch event or user data:", error);
@@ -66,7 +64,7 @@ const EditEvent = () => {
   
     try {
       const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("webProject").collection("events");
+      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
   
       // update the event details in the database
       await eventsCollection.updateOne(
@@ -83,7 +81,7 @@ const EditEvent = () => {
   
       // clean up local storage and navigate back to the main page
       localStorage.removeItem('currentEventName'); 
-      route('/events'); 
+      route('/event-page'); 
     } catch (error) {
       console.error("failed to update the event:", error);
     }
@@ -93,7 +91,7 @@ const EditEvent = () => {
   const handleCancel = () => {
     // remove current event from local storage and navigate back
     localStorage.removeItem('currentEvent');
-    route('/events');
+    route('/event-page');
   };
 
   const handleAttendeeChange = (username, isSelected) => {
@@ -109,7 +107,38 @@ const EditEvent = () => {
     <div class="container mx-auto p-6 bg-gray-100">
       <h2 class="text-xl font-semibold mb-4">Edit Event: {eventName}</h2>
       {/* Event Name Input */}
-      {/* Date and Time Input */}
+      <div class="mb-4">
+        <label class="block text-black font-medium mb-2" htmlFor="eventName">Event Name</label>
+        <input
+          type="text"
+          id="eventName"
+          value={eventName}
+          onChange={(e) => setEventName(e.target.value)}
+          class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
+      {/* Date Input */}
+      <div class="mb-4">
+        <label class="block text-black font-medium mb-2" htmlFor="eventDate">Event Date</label>
+        <input
+          type="date"
+          id="eventDate"
+          value={eventDate}
+          onChange={(e) => setEventDate(e.target.value)}
+          class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
+      {/* Time Input */}
+      <div class="mb-4">
+        <label class="block text-black font-medium mb-2" htmlFor="eventTime">Event Time</label>
+        <input
+          type="time"
+          id="eventTime"
+          value={eventTime}
+          onChange={(e) => setEventTime(e.target.value)}
+          class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
       {/* Attendees Selection */}
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">
