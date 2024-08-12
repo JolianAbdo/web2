@@ -83,9 +83,9 @@ const Registration = () => {
 
             {/* Registration Page */}
             <div className="min-h-screen flex bg-slate-400 dark:bg-slate-500 items-center justify-center">
-                <div className="container mx-auto bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-1/3 justify-center items-center p-12">
+            <div className="container mx-auto bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-full max-w-lg sm:w-2/3 md:w-1/2 lg:w-1/3 p-8 sm:p-12">
                     <div className="flex flex-col items-center gap-2">
-                        <div className="font-bold text-black text-2xl">Register</div>
+                        <div className="font-bold text-black text-xl sm:text-2xl">Register</div>
                         <div className="flex items-center justify-center">
                             <div className="space-y-4">
                                 <div>
