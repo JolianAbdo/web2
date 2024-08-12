@@ -4,7 +4,7 @@ import { route } from 'preact-router';
 import { App as RealmApp, Credentials } from "realm-web";
 
 // initialize the realm app with the application id for authentication
-const app = new RealmApp({ id: "application-0-rbrbg" });
+const app = new RealmApp({ id: "application-0-wjjnjup" });
 
 const JoinEvent = () => {
   // state management for messages and the content of the new message being composed
@@ -31,7 +31,7 @@ const JoinEvent = () => {
       // log in anonymously to mongodb realm for accessing the database
       const user = await app.logIn(Credentials.anonymous());
       const mongodb = user.mongoClient("mongodb-atlas");
-      const messagesCollection = mongodb.db("webProject").collection("messages");
+      const messagesCollection = mongodb.db("Events").collection("messages");
 
       // fetch messages related to the current event and sort them by timestamp
       const relatedMessages = await messagesCollection.find({ eventName });
@@ -47,7 +47,7 @@ const JoinEvent = () => {
 
     try {
       const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const messagesCollection = mongodb.db("webProject").collection("messages");
+      const messagesCollection = mongodb.db("Events").collection("messages");
 
       // insert a new message into the messages collection with the current timestamp
       await messagesCollection.insertOne({

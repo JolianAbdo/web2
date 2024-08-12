@@ -213,6 +213,10 @@ const EventPage = () => {
     localStorage.setItem('currentEventName', eventName);
     route('/EditEvent');
   };
+  const handleJoinEvent = (eventName) => {
+    localStorage.setItem('currentEventName', eventName);
+    route('/JoinEvent');
+  };
 
   return (
     <div class="bg-gray-100 dark:bg-slate-500 font-sans">
@@ -237,20 +241,20 @@ const EventPage = () => {
           <h2 class="text-xl font-semibold text-black mb-4">Create New Event</h2>
           <div class="bg-white dark:bg-slate-700 p-6 rounded-md shadow-md">
             <div class="mb-4">
-              <label class="block text-black font-medium mb-2" htmlFor="eventName">Event Name</label>
+              <label class="block text-blue-600 font-medium mb-2" htmlFor="eventName">Event Name</label>
               <input type="text" id="eventName" class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
             </div>
             <div class="mb-4">
-              <label class="block text-black font-medium mb-2" htmlFor="eventDate">Event Date</label>
+              <label class="block text-blue-600 font-medium mb-2" htmlFor="eventDate">Event Date</label>
               <input type="date" id="eventDate" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} class="w-full px-3 py-2 border dark:bg-slate-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
             </div>
             <div class="mb-4">
-              <label class="block text-black font-medium mb-2" htmlFor="eventTime">Event Time</label>
+              <label class="block text-blue-600 font-medium mb-2" htmlFor="eventTime">Event Time</label>
               <input type="time" id="eventTime" class="w-full px-3 py-2 border rounded-md focus:outline-none dark:bg-slate-300 focus:ring focus:border-blue-300" />
             </div>
             <div class="mb-4">
               <button
-                class="px-4 py-2 bg-gray-400 text-gray-800 rounded-md w-full"
+                class="px-4 py-2 bg-gray-500 text-gray-800 rounded-md w-full"
                 onClick={() => setShowAttendeesSelection(!showAttendeesSelection)}
               >
                 {showAttendeesSelection ? 'Hide' : 'Add'} Attendees
@@ -341,6 +345,7 @@ const EventPage = () => {
                 <div class="flex space-x-2 mt-2">
                   <button onClick={() => handleDeleteEvent(event._id)} class="px-3 py-1 bg-red-500 text-white rounded-md">Delete</button>
                   <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button>
+                  <button onClick={() => handleJoinEvent(event.name)} class="px-3 py-1 bg-green-500 text-white rounded-md">Join</button>
                 </div>
               </li>
             ))}
