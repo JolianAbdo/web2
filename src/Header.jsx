@@ -82,10 +82,14 @@ const Header = ({ currentPage }) => {
             {currentPage === 'event' ? 'Event Calendar' : 'Virtual Event Platform'}
           </h1>
           {loggedIn && (
-            <p className="ml-2 sm:ml-4 text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-              Logged in as: {username}
-            </p>
+            <div className="flex items-center ml-2 sm:ml-4">
+              <span className="w-3 h-3 bg-green-500 rounded-full inline-block mr-2"></span>
+              <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                Logged in as: {username}
+              </p>
+            </div>
           )}
+
         </div>
         <nav className="ml-auto flex space-x-2 sm:space-x-4 text-gray-700 hover:text-blue-600">
           {!loggedIn ? (

@@ -18,7 +18,7 @@ export function App() {
     <>
       <div id="app">
         <Header />
-        <main>
+        <main className='dark:bg-slate-600'>
           <Router>
             <Body path="/" />
             <Login path="/login" />

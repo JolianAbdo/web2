@@ -40,7 +40,6 @@ const Body = () => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
             case "join-btn":
-                //setActiveTab("login");
                 route('/login');
                 break;
             case "back-btn":
