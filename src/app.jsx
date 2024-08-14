@@ -11,6 +11,8 @@ import Recovery from './PasswordRecovery';
 import EventDashboard from './EventDashboard';
 import JoinEvent from './JoinEvent';
 import EditEvent from './EditEvent';
+import OpenEvent from './OpenEvent';
+
 
 
 export function App() {
@@ -28,6 +30,7 @@ export function App() {
             <EventDashboard path="/event-dashboard" />
             <JoinEvent path="/JoinEvent" />
             <EditEvent path="/EditEvent" />
+            <OpenEvent path="/open-event/:eventId" />
           </Router>
         </main>
         <Footer />

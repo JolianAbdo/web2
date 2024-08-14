@@ -1,57 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { route } from 'preact-router'; // Ensure route is imported
+import { h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
+import { App as RealmApp, Credentials } from "realm-web";
+import { route } from 'preact-router';
 
-const EventDashboard = ({ user }) => {
+// MongoDB auth
+const app = new RealmApp({ id: "application-0-wjjnjup" });
+
+const EventDashboard = () => {
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [events, setEvents] = useState([]);
+  const [username, setUsername] = useState('');
 
-  // Fetch events from MongoDB
   useEffect(() => {
-    const fetchEvents = async () => {
+    async function init() {
       try {
-        const mongodb = user.mongoClient("mongodb-atlas");
-        const eventsCollection = mongodb.db("Events").collection("EventsForUser");
-        const fetchedEvents = await eventsCollection.find({}).toArray();
-        setEvents(fetchedEvents);
+        const user = await app.logIn(Credentials.anonymous());
+        setLoggedInUser(user);
+        setUsername(localStorage.getItem("loggedInUsername"));
+
+        // Fetch events
+        await displayEvents(user);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error during initialization:", error);
       }
-    };
-    const displayEvents = async (user) => {
+    }
+    init();
+  }, []);
+
+  const displayEvents = async (user) => {
+    try {
       const mongodb = user.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
+      const eventsCollection = mongodb.db("Events").collection("Events");
       const fetchedEvents = await eventsCollection.find({});
       setEvents(fetchedEvents);
-    };  
-    displayEvents(user);
-    fetchEvents();
-  }, [user]);
-
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("Events").collection("EventsForUser");
-      await eventsCollection.deleteOne({ _id: eventId });
-      await fetchAndUpdateEvents(); // Refresh the events
     } catch (error) {
-      console.error("Error deleting event:", error);
-      alert('Failed to delete the event, please try again');
+      console.error("Error fetching events:", error);
     }
   };
 
+  const handleJoinEvent = (eventId) => {
+    // Redirect to the event details page using event ID
+    route(`/open-event/${eventId}`);
+  };
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Event Dashboard</h2>
-      <ul className="space-y-4">
+    <div class="container mx-auto px-4 py-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">All Events</h2>
+      <ul class="space-y-4">
         {events.map((event) => (
-          <li key={event._id} class="bg-white p-4 rounded-md dark:bg-slate-300 shadow-md">
-                <h4 class="text-md font-semibold">{event.name}</h4>
-                <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}</p>
-                <p class="text-sm text-gray-600">Time: {event.time}</p>
-                <p class="text-sm text-gray-600">Attendees: {event.attendees.join(', ')}</p>
-                <div class="flex space-x-2 mt-2">
-                  {/* <button onClick={() => handleEditEvent(event.name)} class="px-3 py-1 bg-yellow-500 text-white rounded-md">Edit</button> */}
-                  <button onClick={() => handleDeleteEvent(event._id)} class="px-3 py-1 bg-red-500 text-white rounded-md">Delete</button>
-                </div>
+          <li key={event.id} class="bg-white p-4 rounded-md dark:bg-slate-300 shadow-md">
+            <h4 class="text-md font-semibold">{event.name}</h4>
+            <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}</p>
+            <p class="text-sm text-gray-600">Time: {event.time}</p>
+            <p class="text-sm text-gray-600">Creator: {event.creator}</p>
+            <div class="flex space-x-2 mt-2">
+              {event.attendees.includes(username) ? (
+                <button onClick={() => handleJoinEvent(event.id)} class="px-3 py-1 bg-blue-500 text-white rounded-md">Join Event</button>
+              ) : (
+                <button disabled class="px-3 py-1 bg-gray-300 text-gray-600 rounded-md">Not Invited</button>
+              )}
+            </div>
           </li>
         ))}
       </ul>
