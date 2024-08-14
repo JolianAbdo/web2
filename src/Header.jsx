@@ -58,11 +58,6 @@ const Header = ({ currentPage }) => {
   const goToCreateEvent = () => {
     route('/event-page');
   };
-
-  const JoinEvent = () => {
-    route('/JoinEvent');
-  };
-
   const EventDashboard = () => {
     route('/event-dashboard');
   };
@@ -119,12 +114,6 @@ const Header = ({ currentPage }) => {
                     className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
                   >
                     Create Event
-                  </button>
-                  <button
-                    onClick={JoinEvent}
-                    className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                  >
-                    Join Event
                   </button>
                   <button
                     onClick={EventDashboard}
