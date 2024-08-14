@@ -95,33 +95,58 @@ const Header = ({ currentPage }) => {
             >
               Login
             </a>
+            
           ) : (
             <div className="relative">
-              <button
-                onClick={toggleDropdown}
-                className="px-4 py-2 bg-white text-black dark:bg-slate-500 rounded-md focus:outline-none"
-              >
-                <div className="flex flex-col space-y-1">
-                  <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
-                  <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
-                  <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
-                </div>
-              </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg py-2">
-                  <button
-                    onClick={goToCreateEvent}
-                    className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                  >
-                    Create Event
-                  </button>
-                  <button
-                    onClick={EventDashboard}
-                    className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                  >
-                    All Events
-                  </button>
-                  <div className="flex justify-between px-4 py-2">
+  <button
+    onClick={toggleDropdown}
+    className="px-4 py-2 bg-white text-black dark:bg-slate-500 rounded-md focus:outline-none"
+  >
+    <div className="flex flex-col space-y-1">
+      <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
+      <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
+      <span className="block w-6 h-0.5 bg-black dark:text-white"></span>
+    </div>
+  </button>
+  {dropdownOpen && (
+    <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg py-2">
+      <button
+        onClick={goToCreateEvent}
+        className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+      >
+        Create Event
+      </button>
+      <button
+        onClick={EventDashboard}
+        className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+      >
+        All Events
+      </button>
+      <div className="flex justify-between px-4 py-2">
+        <button
+          onClick={logout}
+          className="text-red-500 hover:bg-red-100 dark:hover:bg-slate-700 px-4 py-2 rounded-md"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
+          )}
+        </nav>
+        <button
+                      id="dark-mode"
+                      className="text-gray-700 hover:text-blue-600"
+                      onClick={toggleLight}
+                    >
+                      <img
+                        src="https://static.thenounproject.com/png/2712425-200.png"
+                        className="h-4 w-4 sm:h-6 sm:w-6"
+                        alt="Dark Mode"
+                      />
+                    </button>
                     <button
                       id="light-mode"
                       className="text-gray-700 hover:text-blue-600"
@@ -133,29 +158,6 @@ const Header = ({ currentPage }) => {
                         alt="Light Mode"
                       />
                     </button>
-                    <button
-                      onClick={logout}
-                      className="text-red-500 hover:bg-red-100 dark:hover:bg-slate-700 px-4 py-2 rounded-md"
-                    >
-                      Logout
-                    </button>
-                    <button
-                      id="dark-mode"
-                      className="text-gray-700 hover:text-blue-600"
-                      onClick={toggleLight}
-                    >
-                      <img
-                        src="https://static.thenounproject.com/png/2712425-200.png"
-                        className="h-4 w-4 sm:h-6 sm:w-6"
-                        alt="Dark Mode"
-                      />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </nav>
       </div>
     </div>
   );

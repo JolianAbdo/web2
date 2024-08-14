@@ -70,7 +70,7 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator }) => {
 
 
   return (
-    <section id="event-details" class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <section id="event-details" class="bg-white p-6 dark:bg-slate-400 rounded-lg shadow-md mb-8">
       <h2 class="text-3xl font-semibold mb-4">Event Details</h2>
       {event ? (
         <div>
@@ -510,8 +510,8 @@ const OpenEvent = ({ eventId }) => {
   };
 
   return (
-    <div class="bg-gray-100 font-sans leading-relaxed tracking-wide flex flex-col">
-      <main class="container mx-auto p-6 flex-grow">
+    <div class="bg-gray-100 dark:bg-slate-600 font-sans leading-relaxed tracking-wide flex flex-col">
+      <main class="container mx-auto  p-6 flex-grow">
         {/* Event Details */}
         <EventDetails
           event={event}
@@ -521,7 +521,7 @@ const OpenEvent = ({ eventId }) => {
         />
 
         {/* Live Video */}
-        <section id="live-video" class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <section id="live-video" class="bg-white dark:bg-slate-400 p-6 rounded-lg shadow-md mb-8">
           <h2 class="text-3xl font-semibold mb-4">Live Video</h2>
           <div class="w-full h-[32rem]">
             <iframe
@@ -573,7 +573,7 @@ const OpenEvent = ({ eventId }) => {
         </section>
 
         {/* Chat and Live Polls Section */}
-        <section class="flex flex-col lg:flex-row bg-white p-6 rounded-lg shadow-md mb-8">
+        <section class="flex flex-col lg:flex-row bg-white dark:bg-slate-400 p-6 rounded-lg shadow-md mb-8">
           {/* Live Chat */}
           <div id="chat-section" class="lg:w-1/2 p-2">
             <h2 class="text-3xl font-semibold mb-4">Live Chat</h2>
@@ -765,7 +765,7 @@ const OpenEvent = ({ eventId }) => {
         {/* Q&A Sessions */}
         <section
           id="qa-sessions"
-          class="bg-white p-6 rounded-lg shadow-md mb-8"
+          class="bg-white p-6 dark:bg-slate-400 rounded-lg shadow-md mb-8"
         >
           <h2 class="text-3xl font-semibold mb-4">Q&A Sessions</h2>
           <div id="qa-container">
@@ -847,7 +847,7 @@ const OpenEvent = ({ eventId }) => {
         {/* Networking Opportunities */}
         <section
           id="networking-opportunities"
-          class="bg-white p-6 rounded-lg shadow-md mb-8"
+          class="bg-white dark:bg-slate-400 p-6 rounded-lg shadow-md mb-8"
         >
           <h2 class="text-3xl font-semibold mb-4">Networking Opportunities</h2>
           <div class="h-64 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-inner mb-4">
