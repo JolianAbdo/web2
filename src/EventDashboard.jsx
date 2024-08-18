@@ -46,13 +46,13 @@ const EventDashboard = () => {
   return (
     <div class="container mx-auto px-4 py-8">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">All Events</h2>
-      <ul class="space-y-4">
+      <ul class="space-y-4 h-screen overflow-y-auto">
         {events.map((event) => (
           <li key={event.id} class="bg-white p-4 rounded-md dark:bg-slate-300 shadow-md">
-            <h4 class="text-md font-semibold">{event.name}</h4>
-            <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}</p>
-            <p class="text-sm text-gray-600">Time: {event.time}</p>
+            <h4 class="text-lg font-semibold">{event.name}</h4>
+            <p class="text-md text-gray-800">{event.details}</p>
             <p class="text-sm text-gray-600">Creator: {event.creator}</p>
+            <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}, {event.time}</p>
             <div class="flex space-x-2 mt-2">
               {event.attendees.includes(username) ? (
                 <button onClick={() => handleJoinEvent(event.id)} class="px-3 py-1 bg-blue-500 text-white rounded-md">Join Event</button>
