@@ -64,19 +64,23 @@ const OpenEvent = ({ eventId }) => {
             setEvent(parsedData.event);
             break;
 
+          case "eventDelete":
+            // Perform any additional cleanup if needed, then redirect
+            route("/event-dashboard", true);
+            break;
+
           case "liveLinkUpdate":
-            setEvent((prev) => ({ ...prev, videoUrl: parsedData.videoUrl }));
+            setEvent((prev) => ({ ...prev, liveLink: parsedData.liveLink }));
             break;
 
           case "chatUpdate":
             // Chat updates handled within LiveChat component
             break;
 
-
           case "pollAdd":
-            setEvent(prev => ({
+            setEvent((prev) => ({
               ...prev,
-              polls: [...(prev.polls || []), parsedData.newPoll]
+              polls: [...(prev.polls || []), parsedData.newPoll],
             }));
             break;
 
@@ -89,13 +93,12 @@ const OpenEvent = ({ eventId }) => {
             }));
             break;
 
-
-            case "qaAdd":
-              setEvent(prev => ({
-                  ...prev,
-                  qaSessions: [...(prev.qaSessions || []), parsedData.newQA],
-              }));
-              break;
+          case "qaAdd":
+            setEvent((prev) => ({
+              ...prev,
+              qaSessions: [...(prev.qaSessions || []), parsedData.newQA],
+            }));
+            break;
 
           case "qaDelete":
             setEvent((prev) => ({
@@ -106,17 +109,15 @@ const OpenEvent = ({ eventId }) => {
             }));
             break;
 
-
-            case "opportunityAdd":
-              setEvent(prev => ({
-                  ...prev,
-                  networkingOpportunities: [
-                      ...(prev.networkingOpportunities || []),
-                      parsedData.newOpportunity
-                  ]
-              }));
-              break;
-          
+          case "opportunityAdd":
+            setEvent((prev) => ({
+              ...prev,
+              networkingOpportunities: [
+                ...(prev.networkingOpportunities || []),
+                parsedData.newOpportunity,
+              ],
+            }));
+            break;
 
           case "opportunityDelete":
             setEvent((prev) => ({

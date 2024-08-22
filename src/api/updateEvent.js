@@ -7,8 +7,9 @@ export const updateEvent = async (eventId, updatedData) => {
     const mongodb = user.mongoClient("mongodb-atlas");
     const eventsCollection = mongodb.db("Events").collection("Events");
 
-    // Ensure the _id field is not included in the update operation
+    // Remove the `_id` field from the update data if it exists
     const { _id, ...dataWithoutId } = updatedData;
 
-    await eventsCollection.updateOne({ _id: eventId }, { $set: dataWithoutId });
+    // Use `id` to identify the document and update it
+    await eventsCollection.updateOne({ id: eventId }, { $set: dataWithoutId });
 };

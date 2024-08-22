@@ -134,7 +134,7 @@ const EventPage = () => {
         creator: localStorage.getItem("loggedInUsername"),
         date: eventDate,
         time: eventTime,
-        attendees: selectedUsers,
+        attendees: [localStorage.getItem("loggedInUsername"), ...selectedUsers],
         chatHistory: [],
         polls: [],
         qaSessions: [],
@@ -260,8 +260,8 @@ const EventPage = () => {
     }
   };
 
-  const handleJoinEvent = (eventId,eventName) => {
-    localStorage.setItem('currentEventName', eventName);
+  const handleJoinEvent = (eventId, eventName) => {
+    localStorage.setItem("currentEventName", eventName);
     route(`/open-event/${eventId}`);
   };
 
@@ -357,12 +357,23 @@ const EventPage = () => {
                           <input
                             type="checkbox"
                             value={user.username}
-                            checked={selectedUsers.includes(user.username)}
+                            checked={
+                              user.username ===
+                                localStorage.getItem("loggedInUsername") ||
+                              selectedUsers.includes(user.username)
+                            }
                             onChange={() => handleUserSelection(user._id)}
                             class="form-checkbox h-5 w-5 text-blue-600"
+                            disabled={
+                              user.username ===
+                              localStorage.getItem("loggedInUsername")
+                            } // Disable checkbox if it's the logged-in user
                           />
                           <span class="ml-2 text-blue-500">
-                            {user.username}
+                            {user.username}{" "}
+                            {user.username ===
+                              localStorage.getItem("loggedInUsername") &&
+                              "(Creator)"}
                           </span>
                         </label>
                       </li>
@@ -447,7 +458,7 @@ const EventPage = () => {
                       </p>
                       <div class="flex space-x-2 mt-2">
                         <button
-                          onClick={() => handleJoinEvent(event.id,event.name)}
+                          onClick={() => handleJoinEvent(event.id, event.name)}
                           class="px-3 py-1 bg-green-500 text-white rounded-md"
                         >
                           Join
@@ -493,7 +504,7 @@ const EventPage = () => {
                 <p class="text-sm text-gray-600">Creator: {event.creator}</p>
                 <div class="flex space-x-2 mt-2">
                   <button
-                    onClick={() => handleJoinEvent(event.id,event.name)}
+                    onClick={() => handleJoinEvent(event.id, event.name)}
                     class="px-3 py-1 bg-green-500 text-white rounded-md"
                   >
                     Join

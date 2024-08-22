@@ -53,6 +53,16 @@ const EventDashboard = () => {
             <p class="text-md text-gray-800">{event.details}</p>
             <p class="text-sm text-gray-600">Creator: {event.creator}</p>
             <p class="text-sm text-gray-600">Date: {new Date(event.date).toLocaleDateString()}, {event.time}</p>
+            {/* Display tags */}
+            <div>
+                <ul class="flex flex-wrap space-x-2">
+                  {event.tags?.map((tag) => (
+                    <li key={tag} class="bg-blue-200 text-blue-700 p-1 rounded">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             <div class="flex space-x-2 mt-2">
               {event.attendees.includes(username) ? (
                 <button onClick={() => handleJoinEvent(event.id)} class="px-3 py-1 bg-blue-500 text-white rounded-md">Join Event</button>

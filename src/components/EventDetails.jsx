@@ -2,6 +2,7 @@ import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { fetchUsers } from "../api/fetchUsers"; // Import back-end function
 import { updateEvent } from "../api/updateEvent"; // Import the API function for updating event details
+import { deleteEvent } from "../api/deleteEvent"; // Import the deleteEvent function
 
 const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -44,17 +45,45 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
       console.log("Event details saved successfully");
 
       // Send the update to WebSocket server
-      const ws = new WebSocket('wss://websocket-server-virtual-event-platform.fly.dev/');
+      const ws = new WebSocket(
+        "wss://websocket-server-virtual-event-platform.fly.dev/"
+      );
       ws.onopen = () => {
-        ws.send(JSON.stringify({
-          type: 'eventUpdate',
-          eventId: eventId,
-          event: updatedEvent
-        }));
+        ws.send(
+          JSON.stringify({
+            type: "eventUpdate",
+            eventId: eventId,
+            event: updatedEvent,
+          })
+        );
         ws.close(); // Close the WebSocket connection after sending
       };
     } catch (error) {
       console.error("Failed to save event details:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      try {
+        await deleteEvent(eventId); // Delete the event from the database
+
+        // Notify all connected clients via WebSocket
+        const ws = new WebSocket(
+          "wss://websocket-server-virtual-event-platform.fly.dev/"
+        );
+        ws.onopen = () => {
+          ws.send(
+            JSON.stringify({
+              type: "eventDelete",
+              eventId: eventId,
+            })
+          );
+          ws.close(); // Close the WebSocket connection after sending
+        };
+      } catch (error) {
+        console.error("Failed to delete event:", error);
+      }
     }
   };
 
@@ -269,7 +298,6 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
               <p>{event.details}</p>
               {/* Display tags */}
               <div>
-                <h4 class="font-semibold">Tags:</h4>
                 <ul class="flex flex-wrap space-x-2">
                   {event.tags?.map((tag) => (
                     <li key={tag} class="bg-blue-200 text-blue-700 p-1 rounded">
@@ -296,7 +324,7 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
                     Edit event details
                   </button>
                   <button
-                    onClick={onDelete}
+                    onClick={handleDelete}
                     class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
                   >
                     Delete event
