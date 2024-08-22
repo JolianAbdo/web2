@@ -18,8 +18,23 @@ const LiveVideo = ({ event, isCreator, eventId }) => {
         setLiveLink(editedLiveLink);
         setIsEditingLiveLink(false);
 
-        // Save the new live link to the database
-        await saveLiveLink(eventId, editedLiveLink);
+        try {
+            // Save the new live link to the database
+            await saveLiveLink(eventId, editedLiveLink);
+
+            // Send the update to WebSocket server
+            const ws = new WebSocket('wss://websocket-server-virtual-event-platform.fly.dev/');
+            ws.onopen = () => {
+                ws.send(JSON.stringify({
+                    type: 'liveLinkUpdate',
+                    eventId: eventId,
+                    liveLink: editedLiveLink
+                }));
+                ws.close(); // Close the WebSocket connection after sending
+            };
+        } catch (error) {
+            console.error("Failed to save live link:", error);
+        }
     };
 
     return (

@@ -42,6 +42,17 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
     try {
       await updateEvent(eventId, updatedEvent); // Use eventId prop here
       console.log("Event details saved successfully");
+
+      // Send the update to WebSocket server
+      const ws = new WebSocket('wss://websocket-server-virtual-event-platform.fly.dev/');
+      ws.onopen = () => {
+        ws.send(JSON.stringify({
+          type: 'eventUpdate',
+          eventId: eventId,
+          event: updatedEvent
+        }));
+        ws.close(); // Close the WebSocket connection after sending
+      };
     } catch (error) {
       console.error("Failed to save event details:", error);
     }

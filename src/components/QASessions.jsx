@@ -7,20 +7,36 @@ const QASessions = ({ qaSessions = [], isCreator, eventId }) => {
     const [newQA, setNewQA] = useState({ question: "", answer: "" });
     const [isAddingQA, setIsAddingQA] = useState(false); // State to manage adding a Q&A
 
-    // Load the initial Q&A sessions from the database
     useEffect(() => {
         setQaList(qaSessions);
     }, [qaSessions]);
 
+    const sendWebSocketMessage = (message) => {
+        const ws = new WebSocket('wss://websocket-server-virtual-event-platform.fly.dev/');
+        ws.onopen = () => {
+            ws.send(JSON.stringify(message));
+            ws.close();
+        };
+    };
+
     // Add a new Q&A session and show it immediately in the UI
     const handleSaveQA = async () => {
         if (newQA.question.trim() && newQA.answer.trim()) {
+            const newQAData = { ...newQA };
+
             // Update the UI with the new Q&A immediately
-            setQaList((prevQaList) => [...prevQaList, newQA]);
+            setQaList((prevQaList) => [...prevQaList, newQAData]);
             setIsAddingQA(false);
 
             // Save the new Q&A to the database
-            await addQA(eventId, newQA);
+            await addQA(eventId, newQAData);
+
+            // Notify all connected clients via WebSocket
+            sendWebSocketMessage({
+                type: 'qaAdd',
+                eventId: eventId,
+                newQA: newQAData,
+            });
 
             // Reset the new Q&A form
             setNewQA({ question: "", answer: "" });
@@ -35,6 +51,13 @@ const QASessions = ({ qaSessions = [], isCreator, eventId }) => {
 
         // Delete Q&A from the database
         await deleteQA(eventId, qaIndex);
+
+        // Notify all connected clients via WebSocket
+        sendWebSocketMessage({
+            type: 'qaDelete',
+            eventId: eventId,
+            qaIndex: qaIndex,
+        });
     };
 
     return (

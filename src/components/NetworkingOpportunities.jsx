@@ -7,20 +7,36 @@ const NetworkingOpportunities = ({ opportunities = [], isCreator, eventId }) => 
     const [newOpportunity, setNewOpportunity] = useState({ title: "", link: "" });
     const [isAddingOpportunity, setIsAddingOpportunity] = useState(false); // State to manage adding an opportunity
 
-    // Load the initial opportunities from the database
     useEffect(() => {
         setOpportunityList(opportunities);
     }, [opportunities]);
 
+    const sendWebSocketMessage = (message) => {
+        const ws = new WebSocket('wss://websocket-server-virtual-event-platform.fly.dev/');
+        ws.onopen = () => {
+            ws.send(JSON.stringify(message));
+            ws.close();
+        };
+    };
+
     // Add a new networking opportunity and show it immediately in the UI
     const handleSaveOpportunity = async () => {
         if (newOpportunity.title.trim() && newOpportunity.link.trim()) {
+            const newOpportunityData = { ...newOpportunity };
+
             // Update the UI with the new opportunity immediately
-            setOpportunityList((prevOpportunities) => [...prevOpportunities, newOpportunity]);
+            setOpportunityList((prevOpportunities) => [...prevOpportunities, newOpportunityData]);
             setIsAddingOpportunity(false);
 
             // Save the new opportunity to the database
-            await addOpportunity(eventId, newOpportunity);
+            await addOpportunity(eventId, newOpportunityData);
+
+            // Notify all connected clients via WebSocket
+            sendWebSocketMessage({
+                type: 'opportunityAdd',
+                eventId: eventId,
+                newOpportunity: newOpportunityData,
+            });
 
             // Reset the new opportunity form
             setNewOpportunity({ title: "", link: "" });
@@ -35,6 +51,13 @@ const NetworkingOpportunities = ({ opportunities = [], isCreator, eventId }) => 
 
         // Delete opportunity from the database
         await deleteOpportunity(eventId, index);
+
+        // Notify all connected clients via WebSocket
+        sendWebSocketMessage({
+            type: 'opportunityDelete',
+            eventId: eventId,
+            opportunityIndex: index,
+        });
     };
 
     return (
