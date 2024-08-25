@@ -1,41 +1,19 @@
-import { useState, useEffect } from "preact/hooks";
-import { App, Credentials } from "realm-web";
+import { useState } from "preact/hooks";
+import { loginUser } from "./api/login"; // Import the back-end function
 import './index.css';
 
-// MongoDB auth
-const app = new App({ id: "application-0-wjjnjup" });
-
 const Login = ({ handleLogin }) => {
-    // state management
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const login = async () => {
         try {
-            // using anonymous credentials for login
-            const credentials = Credentials.anonymous();
-            const anonymousUser = await app.logIn(credentials);
-            console.log("Successfully logged in anonymously", anonymousUser);
+            const user = await loginUser(username, password); // Call the back-end function
 
-            // pulling data from MongoDB
-            const mongodb = anonymousUser.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("Login").collection("Users");
-
-            // querying the collection for the username and password
-            const user = await usersCollection.findOne({ username: username, password: password });
-            console.log("Queried User:", user);
-            
-            if (user) {
-                console.log("Login successful for user:", user.username);
-                // saving username in local storage
-                localStorage.setItem("loggedInUsername", username);
-                window.location.href = "/event-dashboard"; // Redirect to event dashboard
-            } else {
-                console.log(usersCollection);
-                throw new Error("Invalid username or password.");
-            }
+            console.log("Login successful for user:", user.username);
+            localStorage.setItem("loggedInUsername", username);
+            window.location.href = "/event-dashboard"; // Redirect to event dashboard
         } catch (err) {
-            console.error("Failed to log in", err);
             alert("Invalid username or password. Please try again.");
         }
     };

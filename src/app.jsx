@@ -9,10 +9,8 @@ import EventPage from './EventPage';
 import Registration from './Registration';
 import Recovery from './PasswordRecovery';
 import EventDashboard from './EventDashboard';
-import JoinEvent from './JoinEvent';
-import EditEvent from './EditEvent';
 import OpenEvent from './OpenEvent';
-
+import AboutUs from './AboutUs';
 
 
 export function App() {
@@ -28,9 +26,8 @@ export function App() {
             <Recovery path="/password_recovery" />
             <EventPage path="/event-page" />
             <EventDashboard path="/event-dashboard" />
-            <JoinEvent path="/JoinEvent" />
-            <EditEvent path="/EditEvent" />
             <OpenEvent path="/open-event/:eventId" />
+            <AboutUs path="/about-us" />
           </Router>
         </main>
         <Footer />

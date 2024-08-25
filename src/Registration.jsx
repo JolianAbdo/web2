@@ -1,7 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
-import { App as RealmApp, Credentials } from "realm-web";
-
-const app = new RealmApp({ id: "application-0-wjjnjup" });
+import { registerUser } from './api/registerUser'; // Import the backend function
 
 const Registration = () => {
     const [username, setUsername] = useState("");
@@ -19,43 +17,20 @@ const Registration = () => {
         }
     }, [showSuccessModal]);
 
-    const registerUser = async () => {
+    const handleRegistration = async () => {
         if (password !== confirmPassword) {
             alert('Passwords do not match. Please try again.');
             return;
         }
 
         try {
-            const credentials = Credentials.anonymous();
-            const user = await app.logIn(credentials);
-            const mongodb = user.mongoClient("mongodb-atlas");
-            const usersCollection = mongodb.db("Login").collection("Users");
-
-            const existingUser = await usersCollection.findOne({ username });
-
-            if (!username || !password) {
-                alert('Please enter both username and password.');
-                return;
+            const response = await registerUser(username, password);
+            if (response.success) {
+                setShowSuccessModal(true); // Show success modal on successful registration
             }
-
-            if (existingUser) {
-                alert('Username already exists. Please choose another one.');
-                return;
-            }
-
-            await usersCollection.insertOne({
-                username,
-                password,
-            });
-
-            // Show success modal
-            setShowSuccessModal(true);
         } catch (err) {
-            console.error("Failed to register user:", err);
-            alert("Registration failed. Please try again.");
+            alert(err.message || "Registration failed. Please try again.");
         }
-        console.log("Queried User:", user);
-
     };
 
     return (
@@ -83,7 +58,7 @@ const Registration = () => {
 
             {/* Registration Page */}
             <div className="min-h-screen flex bg-slate-400 dark:bg-slate-500 items-center justify-center">
-            <div className="container mx-auto bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-full max-w-lg sm:w-2/3 md:w-1/2 lg:w-1/3 p-8 sm:p-12">
+                <div className="container mx-auto bg-slate-100 dark:bg-slate-600 flex flex-col gap-8 rounded-2xl w-full max-w-lg sm:w-2/3 md:w-1/2 lg:w-1/3 p-8 sm:p-12">
                     <div className="flex flex-col items-center gap-2">
                         <div className="font-bold text-black text-xl sm:text-2xl">Register</div>
                         <div className="flex items-center justify-center">
@@ -124,7 +99,7 @@ const Registration = () => {
                                 <div className="flex flex-col items-center space-y-2">
                                     <button
                                         type="button"
-                                        onClick={registerUser}
+                                        onClick={handleRegistration} // Call the backend function
                                         className="w-64 bg-blue-500 dark:bg-slate-800 dark:hover:bg-slate-500 text-white p-2 rounded-lg hover:bg-blue-600 transition"
                                     >
                                         Register
@@ -145,7 +120,6 @@ const Registration = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

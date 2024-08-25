@@ -120,12 +120,9 @@ const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
   useEffect(() => {
     const fetchAndSetUsers = async () => {
       if (!event || !event.id) return; // Ensure 'event' and 'event.id' are defined
-      const users = await fetchUsers(); // Fetch all users from the database
-      const filteredUsers = users.filter((u) => u._id !== event.creatorId);
+      const filteredUsers = await fetchUsers(); // Fetch all users from the database
       setAllUsers(filteredUsers);
-
-      // Ensure the creator is in the selectedUsers array
-      setSelectedUsers([event.creator, ...(event.attendees || [])]);
+      setSelectedUsers((event.attendees || []));
     };
 
     fetchAndSetUsers();

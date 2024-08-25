@@ -1,27 +1,16 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
-import { App as RealmApp, Credentials, BSON } from "realm-web";
 import { route } from "preact-router";
-
-const app = new RealmApp({ id: "application-0-wjjnjup" });
+import { fetchEvents } from './api/fetchEvents'; // Fetch events API
+import { fetchUsers } from './api/fetchUsers'; // Fetch users API
+import { addEvent } from './api/addEvent'; // Add event API
+import { deleteEvent } from './api/deleteEvent'; // Delete event API
 
 const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
 ];
 
 const EventPage = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [events, setEvents] = useState([]);
@@ -32,57 +21,45 @@ const EventPage = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
-
+  
   const username = localStorage.getItem("loggedInUsername");
 
   const formatDate = (date) => {
     const d = new Date(date);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(d.getDate()).padStart(2, "0")}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
   useEffect(() => {
     async function init() {
-      const user = await app.logIn(Credentials.anonymous());
-      setLoggedInUser(user);
+      try {
+        const events = await fetchEvents(true); // Fetch only events where the logged-in user is an attendee
+        setEvents(events);
 
-      displayEvents(user);
-      generateCalendarDays(currentYear, currentMonth);
+        generateCalendarDays(currentYear, currentMonth);
 
-      const mongodb = user.mongoClient("mongodb-atlas");
-      const usersCollection = mongodb.db("Login").collection("Users");
-      const fetchedUsers = await usersCollection.find({});
-      const filteredUsers = fetchedUsers.filter((u) => u._id !== user.id);
-      setAllUsers(filteredUsers);
+        const filteredUsers = await fetchUsers(); // Fetch all users
+        setAllUsers(filteredUsers);
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      }
     }
     init();
-  }, [events, currentMonth, currentYear]);
+  }, [currentMonth, currentYear]);
 
   const generateCalendarDays = (year, month) => {
     const numDays = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
     const today = new Date();
-    const isCurrentMonth =
-      year === today.getFullYear() && month === today.getMonth();
+    const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
 
     const calendarDays = Array.from({ length: firstDay }, () => null);
 
     for (let day = 1; day <= numDays; day++) {
       const fullDate = new Date(year, month, day);
-      const formattedDate = `${year}-${String(month + 1).padStart(
-        2,
-        "0"
-      )}-${String(day).padStart(2, "0")}`;
-      const dayEvents = events.filter(
-        (event) => formatDate(event.date) === formattedDate
-      );
+      const formattedDate = formatDate(fullDate);
+      const dayEvents = events.filter((event) => formatDate(event.date) === formattedDate);
       const isEvent = dayEvents.length > 0;
-      const isUserInvolved = dayEvents.some(
-        (event) =>
-          event.username === username || event.attendees.includes(username)
-      );
+      const isUserInvolved = dayEvents.some((event) => event.attendees.includes(username));
       const isToday = isCurrentMonth && day === today.getDate();
       const isUnavailable = fullDate < today;
 
@@ -98,17 +75,7 @@ const EventPage = () => {
     setCalendarDays(calendarDays);
   };
 
-  const displayEvents = async (user) => {
-    const mongodb = user.mongoClient("mongodb-atlas");
-    const eventsCollection = mongodb.db("Events").collection("Events");
-    const fetchedEvents = await eventsCollection.find({
-      $or: [{ username: username }, { attendees: username }],
-    });
-
-    setEvents(fetchedEvents);
-  };
-
-  const addEvent = async () => {
+  const handleAddEvent = async () => {
     const eventName = document.getElementById("eventName").value;
     const eventDate = document.getElementById("eventDate").value;
     const eventTime = document.getElementById("eventTime").value;
@@ -119,30 +86,19 @@ const EventPage = () => {
     }
 
     try {
-      const mongodb = loggedInUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("Events").collection("Events");
-
-      // Generate a unique ID for the event
-      const eventId = new BSON.ObjectId().toString();
-
-      await eventsCollection.insertOne({
-        _id: new BSON.ObjectId(),
+      await addEvent({
         name: eventName,
         details: "Placeholder for event details.",
         liveLink: "",
-        id: eventId,
-        creator: localStorage.getItem("loggedInUsername"),
+        creator: username,
         date: eventDate,
         time: eventTime,
-        attendees: [localStorage.getItem("loggedInUsername"), ...selectedUsers],
-        chatHistory: [],
-        polls: [],
-        qaSessions: [],
-        networkingOpportunities: [],
+        attendees: [username, ...selectedUsers],
       });
 
       resetFormAndStates();
-      await fetchAndUpdateEvents();
+      const updatedEvents = await fetchEvents(true);
+      setEvents(updatedEvents);
       generateCalendarDays(currentYear, currentMonth);
     } catch (error) {
       console.error("Error creating event:", error);
@@ -150,44 +106,28 @@ const EventPage = () => {
     }
   };
 
-  const updateCalendar = () => {
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-    const numberOfDaysInMonth = new Date(
-      currentYear,
-      currentMonth + 1,
-      0
-    ).getDate();
-
-    const daysArray = [];
-    for (let i = 0; i < firstDayOfMonth; i++) {
-      daysArray.push({ day: null });
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await deleteEvent(eventId);
+      const updatedEvents = await fetchEvents(true);
+      setEvents(updatedEvents);
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      alert("Failed to delete the event, please try again");
     }
-    for (let day = 1; day <= numberOfDaysInMonth; day++) {
-      daysArray.push({
-        day,
-        isEvent: !!events.find(
-          (event) =>
-            formatDate(event.date) ===
-            `${currentYear}-${String(currentMonth + 1).padStart(
-              2,
-              "0"
-            )}-${String(day).padStart(2, "0")}`
-        ),
-      });
-    }
-
-    setCalendarDays(daysArray);
   };
 
-  const logout = () => {
-    localStorage.removeItem("currentUser");
-    window.location.href = "/";
-  };
+  const handleUserSelection = (userId) => {
+    const user = allUsers.find((user) => user._id === userId);
+    if (!user) return;
 
-  const scrollToAllEvents = (allEventsRef) => {
-    if (allEventsRef.current) {
-      allEventsRef.current.scrollIntoView();
-    }
+    setSelectedUsers((prevSelected) => {
+      if (prevSelected.includes(user.username)) {
+        return prevSelected.filter((username) => username !== user.username);
+      } else {
+        return [...prevSelected, user.username];
+      }
+    });
   };
 
   const handleMonthChange = (increment) => {
@@ -204,28 +144,10 @@ const EventPage = () => {
     });
   };
 
-  const handleUserSelection = (userId) => {
-    const user = allUsers.find((user) => user._id === userId);
-    if (!user) return;
-
-    setSelectedUsers((prevSelected) => {
-      if (prevSelected.includes(user.username)) {
-        return prevSelected.filter((username) => username !== user.username);
-      } else {
-        return [...prevSelected, user.username];
-      }
-    });
-  };
-
   const handleDayClick = (day) => {
     if (day) {
-      const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(
-        2,
-        "0"
-      )}-${String(day).padStart(2, "0")}`;
-      const dayEvents = events.filter(
-        (event) => formatDate(event.date) === fullDate
-      );
+      const fullDate = formatDate(new Date(currentYear, currentMonth, day));
+      const dayEvents = events.filter((event) => formatDate(event.date) === fullDate);
       setSelectedDayEvents(dayEvents);
       setSelectedDate(fullDate);
     }
@@ -239,25 +161,6 @@ const EventPage = () => {
     setSelectedUsers([]);
     setShowAttendeesSelection(false);
     setShowSuccessModal(true);
-  };
-
-  const fetchAndUpdateEvents = async () => {
-    const mongodb = loggedInUser.mongoClient("mongodb-atlas");
-    const eventsCollection = mongodb.db("Events").collection("Events");
-    const fetchedEvents = await eventsCollection.find({});
-    setEvents(fetchedEvents);
-  };
-
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-      const eventsCollection = mongodb.db("Events").collection("Events");
-      await eventsCollection.deleteOne({ _id: eventId });
-      await fetchAndUpdateEvents();
-    } catch (error) {
-      console.error("Error deleting event:", error);
-      alert("Failed to delete the event, please try again");
-    }
   };
 
   const handleJoinEvent = (eventId, eventName) => {
@@ -383,7 +286,7 @@ const EventPage = () => {
               )}
             </div>
             <button
-              onClick={addEvent}
+              onClick={handleAddEvent}
               class="px-4 py-2 bg-blue-600 text-white rounded-md w-full"
             >
               Add Event
