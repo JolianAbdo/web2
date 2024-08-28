@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { addQA, deleteQA } from '../../../api/qa'; // Import back-end functions
-import QASessionsHTML from "./QASessions.html"; // Import the HTML structure
+import QASessionsHTML from "./QASessions.html.jsx"; // Import the HTML structure
 
 const QASessions = ({ qaSessions = [], isCreator, eventId }) => {
     // State to manage the list of Q&A sessions and form inputs

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
-import HeaderHTML from './Header.html.js'; // Import the HTML structure
+import HeaderHTML from './Header.html.jsx'; // Import the HTML structure
 
 const Header = ({ currentPage }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {

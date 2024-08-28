@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { route } from "preact-router";
-import OpenEventHTML from "./OpenEvent.html"; // Import the HTML structure
+import OpenEventHTML from "./OpenEvent.html.jsx"; // Import the HTML structure
 import { fetchEvent } from "../../api/fetchEvent"; // Import the fetchEvent function from the api directory
 
 const OpenEvent = ({ eventId }) => {

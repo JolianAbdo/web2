@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { updateChat } from "../../../api/updateChat"; // Import the back-end function
-import LiveChatHTML from "./LiveChat.html"; // Import the HTML structure
+import LiveChatHTML from "./LiveChat.html.jsx"; // Import the HTML structure
 
 const LiveChat = ({ eventId, chatMessages, username }) => {
   // State to manage the chat input and messages

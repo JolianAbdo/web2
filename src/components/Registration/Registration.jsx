@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { registerUser } from '../../api/registerUser'; // Import the backend function
-import RegistrationHTML from './Registration.html.js'; // Import the HTML structure
+import RegistrationHTML from './Registration.html.jsx'; // Import the HTML structure
 
 const Registration = () => {
     // State variables for managing form inputs and modal display

@@ -1,4 +1,4 @@
-import FooterHTML from './Footer.html.js'; // Import the HTML structure
+import FooterHTML from './Footer.html.jsx'; // Import the HTML structure
 
 const Footer = () => {
     return FooterHTML(); // Render the HTML structure

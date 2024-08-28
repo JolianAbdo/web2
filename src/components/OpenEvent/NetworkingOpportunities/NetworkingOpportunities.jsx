@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { addOpportunity, deleteOpportunity } from '../../../api/opportunities'; // Import back-end functions
-import NetworkingOpportunitiesHTML from "./NetworkingOpportunities.html"; // Import the HTML structure
+import NetworkingOpportunitiesHTML from "./NetworkingOpportunities.html.jsx"; // Import the HTML structure
 
 const NetworkingOpportunities = ({ opportunities = [], isCreator, eventId }) => {
     // State to manage the list of networking opportunities and form inputs

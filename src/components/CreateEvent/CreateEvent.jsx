@@ -3,7 +3,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { route } from "preact-router";
-import CreateEventHTML from "./CreateEvent.html"; // Import the HTML structure
+import CreateEventHTML from "./CreateEvent.html.jsx"; // Import the HTML structure
 import { fetchEvents } from "../../api/fetchEvents"; // Import the fetch events API
 import { fetchUsers } from "../../api/fetchUsers"; // Import the fetch users API
 import { addEvent } from "../../api/addEvent"; // Import the add event API

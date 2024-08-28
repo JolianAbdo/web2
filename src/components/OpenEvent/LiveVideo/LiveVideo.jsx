@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { saveLiveLink } from '../../../api/liveVideo'; // Import back-end function
-import LiveVideoHTML from "./LiveVideo.html"; // Import the HTML structure
+import LiveVideoHTML from "./LiveVideo.html.jsx"; // Import the HTML structure
 
 const LiveVideo = ({ event, isCreator, eventId }) => {
     // State to manage the live video link and editing mode

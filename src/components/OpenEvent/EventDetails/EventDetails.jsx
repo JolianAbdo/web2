@@ -3,7 +3,7 @@ import { useState, useEffect } from "preact/hooks";
 import { fetchUsers } from "../../../api/fetchUsers"; // Import the function to fetch users
 import { updateEvent } from "../../../api/updateEvent"; // Import the function to update event details
 import { deleteEvent } from "../../../api/deleteEvent"; // Import the function to delete an event
-import EventDetailsHTML from "./EventDetails.html"; // Import the HTML structure
+import EventDetailsHTML from "./EventDetails.html.jsx"; // Import the HTML structure
 
 const EventDetails = ({ event, onEdit, onDelete, isCreator, eventId }) => {
   // State variables for managing the event details and user selections

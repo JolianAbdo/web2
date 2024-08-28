@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
 import { fetchEvents } from '../../api/fetchEvents'; // Import the backend function
-import EventDashboardHTML from './EventDashboard.html'; // Import the HTML structure
+import EventDashboardHTML from './EventDashboard.html.jsx'; // Import the HTML structure
 
 const EventDashboard = () => {
   // State variables for events, filtered events, search query, and username

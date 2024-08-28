@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { recoverPassword } from '../../api/passwordRecovery'; // Import the backend function
-import PasswordRecoveryHTML from './PasswordRecovery.html.js'; // Import the HTML structure
+import PasswordRecoveryHTML from './PasswordRecovery.html.jsx'; // Import the HTML structure
 
 const PasswordRecovery = () => {
     // State variables for managing form inputs and modal visibility

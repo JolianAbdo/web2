@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import { loginUser } from '../../api/login'; // Import the back-end function
-import LoginHTML from './Login.html.js'; // Import the HTML structure
+import LoginHTML from './Login.html.jsx'; // Import the HTML structure
 
 const Login = ({ handleLogin }) => {
     // State variables for managing user input

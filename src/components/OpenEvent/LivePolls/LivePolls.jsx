@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { addPoll, deletePoll, updatePoll } from "../../../api/polls"; // Import back-end functions
-import LivePollsHTML from "./LivePolls.html"; // Import the HTML structure
+import LivePollsHTML from "./LivePolls.html.jsx"; // Import the HTML structure
 
 const LivePolls = ({ polls = [], isCreator, eventId }) => {
   // State to manage poll list, new poll data, selected poll, poll selections, and poll creation state
