@@ -109,9 +109,9 @@ const CreateEvent = () => {
 
   // Delete an event
   const handleDeleteEvent = async (eventId) => {
-    console.log("Delete event triggered for ID:", eventId); // Debugging line
     try {
       await deleteEvent(eventId);
+      setSelectedDayEvents([]);
       const updatedEvents = await fetchEvents(true);
       setEvents(updatedEvents);
       generateCalendarDays(currentYear, currentMonth); // Regenerate the calendar after deletion
@@ -198,6 +198,7 @@ const CreateEvent = () => {
     setShowSuccessModal,
     setShowAttendeesSelection,
     setSelectedDate,
+    setSelectedDayEvents,
     events,
 
   });

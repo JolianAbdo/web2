@@ -59,7 +59,7 @@ const HeaderHTML = ({
 
           <h1
             className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 cursor-pointer"
-            onClick={() => route('/')}
+            onClick={() => route("/")}
           >
             Virtual Event Platform
           </h1>
@@ -68,7 +68,10 @@ const HeaderHTML = ({
         <div className="flex items-center space-x-2 sm:space-x-4">
           {loggedIn ? (
             <div className="relative flex items-center">
-              <div className="flex items-center cursor-pointer" onClick={toggleProfileDropdown}>
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={toggleProfileDropdown}
+              >
                 <span className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full inline-block mr-1 sm:mr-2"></span>
                 <p className="text-gray-600 dark:text-gray-300">
                   Logged in as: {username}
@@ -88,9 +91,12 @@ const HeaderHTML = ({
                   ></path>
                 </svg>
               </div>
-              
+
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg py-2 z-10" style={{ top: '100%' }}>
+                <div
+                  className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg py-2 z-10"
+                  style={{ top: "100%" }}
+                >
                   <button
                     onClick={goToPasswordRecovery}
                     className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
@@ -108,7 +114,7 @@ const HeaderHTML = ({
             </div>
           ) : (
             <button
-              onClick={() => route('/login')}
+              onClick={() => route("/login")}
               id="login-btn"
               className="text-blue-500 hover:bg-blue-100 dark:hover:bg-slate-700 px-4 py-2 rounded-md transition"
             >
@@ -135,7 +141,7 @@ const HeaderHTML = ({
               onClick={toggleLight}
             >
               <img
-                src="https://static.thenounproject.com/png/4808961-200.png"
+                src="https://static-00.iconduck.com/assets.00/mode-light-icon-512x512-yuubs6qt.png"
                 className="h-3 w-3 sm:h-5 sm:w-5"
                 alt="Light Mode"
               />

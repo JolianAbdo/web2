@@ -24,6 +24,7 @@ const CreateEventHTML = ({
   setShowSuccessModal,
   setShowAttendeesSelection,
   setSelectedDate,
+  setSelectedDayEvents,
   events,
   event,
 }) => {
@@ -221,6 +222,7 @@ const CreateEventHTML = ({
                       class="bg-gray-100 p-4 rounded-md shadow"
                     >
                       <h4 class="text-md font-semibold">{event.name}</h4>
+                      <p class="text-sm text-gray-600">Description: {event.details}</p>
                       <p class="text-sm text-gray-600">Time: {event.time}</p>
                       <p class="text-sm text-gray-600">
                         Creator: {event.creator}
@@ -267,6 +269,7 @@ const CreateEventHTML = ({
                 class="bg-white p-4 rounded-md dark:bg-slate-300 shadow-md"
               >
                 <h4 class="text-md font-semibold">{event.name}</h4>
+                <p class="text-sm text-gray-600">Description: {event.details}</p>
                 <p class="text-sm text-gray-600">
                   Date: {new Date(event.date).toLocaleDateString()}
                 </p>

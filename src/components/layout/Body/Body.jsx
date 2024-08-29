@@ -67,7 +67,7 @@ const Body = () => {
     return (
       <div class="text-center text-white">
         <h2 class="text-5xl font-bold bg-black bg-opacity-50 text-white px-2 py-1 inline-block rounded">
-          Welcome to Virtual Event Planner
+          Welcome to Virtual Event Platform
         </h2>
         <p class="text-xl mt-4 bg-black bg-opacity-50 text-white px-2 py-1 inline-block rounded">
           Join us online for an amazing experience of tech talks and networking.
